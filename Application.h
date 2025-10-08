@@ -1,11 +1,12 @@
-#ifndef APPLICATION_H
-#define APPLICATION_H
-
+﻿#pragma once
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <vector> 
-#include "ShaderProgram.h"
-#include "Model.h"
+
+#include "Scene.h"
+
+class ShaderProgram;
+class Model;
+class DrawableObject;
 
 class Application {
 public:
@@ -15,15 +16,18 @@ public:
     void run();
 
 private:
-    GLFWwindow* window;
-
-    std::vector<Model*> models;
-    std::vector<ShaderProgram*> programs;
-
+    GLFWwindow* window = nullptr;
 
     void initGLFW(int width, int height, const char* title);
     void initGLEW();
     void loop();
-};
 
-#endif
+    Scene scene;                     // сцена как поле
+
+    ShaderProgram* progGreen = nullptr;
+    Model* modelSquare = nullptr;
+
+    // «ручка» на объект квадрата + угол вращения
+    DrawableObject* quadObj = nullptr;
+    float angle = 0.0f;
+};

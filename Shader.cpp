@@ -1,27 +1,26 @@
-#include "Shader.h"
+﻿#include "Shader.h"
 #include <iostream>
-using namespace std;
 
-Shader::Shader(const char* source, GLenum type) : id(0) {
+Shader::Shader(const char* source, GLenum type) {
     compile(source, type);
 }
 
 Shader::~Shader() {
-    if (id != 0) {
-        glDeleteShader(id);
+    if (shaderId != 0) {
+        glDeleteShader(shaderId);
     }
 }
 
 void Shader::compile(const char* source, GLenum type) {
-    id = glCreateShader(type);
-    glShaderSource(id, 1, &source, nullptr);
-    glCompileShader(id);
+    shaderId = glCreateShader(type);
+    glShaderSource(shaderId, 1, &source, nullptr);
+    glCompileShader(shaderId);
 
-    GLint success;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &success);
+    GLint success = GL_FALSE;
+    glGetShaderiv(shaderId, GL_COMPILE_STATUS, &success);
     if (!success) {
         char log[512];
-        glGetShaderInfoLog(id, 512, nullptr, log);
+        glGetShaderInfoLog(shaderId, 512, nullptr, log);
         std::cerr << "ERROR: Shader compilation failed\n" << log << std::endl;
     }
 }

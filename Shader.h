@@ -1,6 +1,4 @@
-#ifndef SHADER_H
-#define SHADER_H
-
+﻿#pragma once
 #include <GL/glew.h>
 
 class Shader {
@@ -9,10 +7,8 @@ public:
     ~Shader();
 
 private:
-    GLuint id;
+    GLuint shaderId = 0;         // id объекта шейдера в GPU
     void compile(const char* source, GLenum type);
 
     friend class ShaderProgram;
 };
-
-#endif

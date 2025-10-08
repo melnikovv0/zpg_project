@@ -1,0 +1,30 @@
+﻿#pragma once
+#include <glm/mat4x4.hpp>
+#include <memory>
+
+class Model;
+class ShaderProgram;
+class Transformation;
+
+class DrawableObject {
+public:
+    DrawableObject(Model* model, ShaderProgram* program)
+        : model(model), program(program) {
+    }
+
+    // Оставляем совместимость: это «базовая» модельная матрица (разовая поза)
+    void setModelMatrix(const glm::mat4& m) { baseMatrix = m; }
+
+    // Новое: «живые» трансформации (можно передать CompositeTransform или любой лист)
+    void setTransform(const std::shared_ptr<Transformation>& t) { transform = t; }
+
+    void update(float dt);
+    void draw() const;
+
+private:
+    Model* model = nullptr;
+    ShaderProgram* program = nullptr;
+
+    glm::mat4 baseMatrix{ 1.0f };                          // то, что ты раньше задавал setModelMatrix()
+    std::shared_ptr<Transformation> transform = nullptr; // дерево трансформаций
+};

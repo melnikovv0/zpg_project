@@ -1,19 +1,17 @@
-#ifndef MODEL_H
-#define MODEL_H
-
+﻿#pragma once
 #include <GL/glew.h>
 #include <vector>
 
 class Model {
 public:
-    Model(const std::vector<float>& vertices);
+    // vertices: interleaved xyz nx ny nz (6 float на вершину)
+    explicit Model(const std::vector<float>& vertices);
     ~Model();
 
     void draw() const;
 
 private:
-    GLuint vao, vbo;
-    GLsizei vertexCount;
+    GLuint vao = 0;
+    GLuint vbo = 0;
+    GLsizei vertexCount = 0;
 };
-
-#endif

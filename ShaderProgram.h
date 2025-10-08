@@ -1,7 +1,6 @@
-#ifndef SHADERPROGRAM_H
-#define SHADERPROGRAM_H
-
+#pragma once
 #include <GL/glew.h>
+#include <glm/glm.hpp>
 #include "Shader.h"
 
 class ShaderProgram {
@@ -11,9 +10,10 @@ public:
 
     void use() const;
 
+    void setUniform(const char* name, float v) const;
+    void setUniform(const char* name, const glm::mat4& m) const;
+
 private:
-    GLuint id;
+    GLuint programId = 0;
     void link(const Shader& vs, const Shader& fs);
 };
-
-#endif
