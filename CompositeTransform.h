@@ -6,12 +6,12 @@
 // Композит: хранит набор дочерних трансформаций и перемножает их по порядку добавления
 class CompositeTransform : public Transformation {
 public:
-    void add(const std::shared_ptr<Transformation>& t);
+    void add(const std::shared_ptr<Transformation>& t);//Přidat „detail“
     void clear();
 
-    glm::mat4 matrix() const override;
+    glm::mat4 matrix() const override; //vynásobí matice všech svých podřízených „částí“!
     void update(float dt) override;
 
 private:
-    std::vector<std::shared_ptr<Transformation>> children;
+    std::vector<std::shared_ptr<Transformation>> children; //ukládá ukazatele na všechny podřízené transformace
 };

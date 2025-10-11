@@ -1,123 +1,104 @@
 ﻿#include "Application.h"
-#include "ShaderProgram.h"
-#include "Model.h"
-#include "DrawableObject.h"
+#include "ApplicationController.h"
 
 #include <iostream>
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "CompositeTransform.h"
-#include "Translation.h"
-#include "Rotation.h"
-#include "Scale.h"
+#include <memory>                  // Для std::unique_ptr и std::make_unique
+#include <stdexcept>               // Для std::runtime_error
+#include <GLFW/glfw3.h>
 
-static void error_callback(int, const char* description) { fputs(description, stderr); }
+
+
 
 Application::Application(int width, int height, const char* title) {
     initGLFW(width, height, title);
     initGLEW();
 
-    glEnable(GL_DEPTH_TEST);
-    glClearColor(0.f, 0.f, 0.f, 1.f);
+    // Создаем наш контроллер. unique_ptr позаботится о его удалении.
+    m_Controller = std::make_unique<ApplicationController>(m_Window);
 
-    // --- шейдеры (вершинный с uniform mat4 modelMatrix) ---
-    const char* vsrc =
-        "#version 330 core\n"
-        "layout(location=0) in vec3 aPos;\n"
-        "layout(location=1) in vec3 aNormal;\n"
-        "uniform mat4 modelMatrix;\n"
-        "void main(){ gl_Position = modelMatrix * vec4(aPos, 1.0); }\n";
+    // ВАЖНЫЙ ТРЮК: "сохраняем" указатель на наш контроллер внутри окна GLFW,
+    // чтобы статические колбэки могли его оттуда достать.
 
-    const char* fsrc =
-        "#version 330 core\n"
-        "out vec4 fragColor;\n"
-        "void main(){ fragColor = vec4(0.0, 1.0, 0.0, 1.0); }\n";
+    glfwSetWindowUserPointer(m_Window, m_Controller.get());
 
-    progGreen = new ShaderProgram(vsrc, fsrc);
-
-    // --- квадрат: pos(3) + normal(3) => 6 float на вершину ---
-    std::vector<float> square = {
-       -0.5f,-0.5f,0.0f,  0,0,1,
-        0.5f,-0.5f,0.0f,  0,0,1,
-        0.5f, 0.5f,0.0f,  0,0,1,
-
-       -0.5f,-0.5f,0.0f,  0,0,1,
-        0.5f, 0.5f,0.0f,  0,0,1,
-       -0.5f, 0.5f,0.0f,  0,0,1,
-    };
-    modelSquare = new Model(square);
-
-    // --- сцена: добавляем объект и сохраняем «ручку» на него ---
-    auto& quad = scene.add(modelSquare, progGreen);
-    quadObj = &quad;
+    // Устанавливаем колбэки
+    glfwSetKeyCallback(m_Window, Application::keyCallback);
+   
 }
 
 Application::~Application() {
-    scene.clear();
-
-    delete modelSquare;
-    delete progGreen;
-
-    glfwDestroyWindow(window);
+    glfwDestroyWindow(m_Window);
     glfwTerminate();
 }
 
-void Application::initGLFW(int w, int h, const char* title) {
-    glfwSetErrorCallback(error_callback);
-    if (!glfwInit()) std::exit(EXIT_FAILURE);
+void Application::run() {
+    // Говорим контроллеру загрузить все ресурсы и построить сцены
+    m_Controller->init();
+
+    double prevTime = glfwGetTime();
+
+    while (!glfwWindowShouldClose(m_Window)) {
+        double currentTime = glfwGetTime();
+        float dt = static_cast<float>(currentTime - prevTime);
+        prevTime = currentTime;
+
+        glClearColor(0.f, 0.f, 0.f, 1.f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // В каждом кадре мы просто передаем управление контроллеру
+        m_Controller->update(dt);
+        m_Controller->render();
+
+        glfwSwapBuffers(m_Window);
+        glfwPollEvents();
+    }
+}
+
+//--------------- Статические колбэки ---------------//
+
+void Application::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    // "Достаем" наш контроллер из окна
+    auto* controller = static_cast<ApplicationController*>(glfwGetWindowUserPointer(window));
+    if (controller) {
+        // И передаем событие ему на обработку
+        controller->keyCallback(key, scancode, action, mods);
+    }
+}
+
+
+
+//--------------- Функции инициализации ---------------//
+
+void Application::initGLFW(int width, int height, const char* title) {
+    if (!glfwInit()) {
+        throw std::runtime_error("Failed to initialize GLFW");
+    }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(w, h, title, nullptr, nullptr);
-    if (!window) { glfwTerminate(); std::exit(EXIT_FAILURE); }
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
+    m_Window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+    if (!m_Window) {
+        glfwTerminate();
+        throw std::runtime_error("Failed to create GLFW window");
+    }
+    glfwMakeContextCurrent(m_Window);
+    glfwSwapInterval(1); // Включаем V-Sync
+    glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Скрываем курсор
 }
 
 void Application::initGLEW() {
     glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK) std::exit(EXIT_FAILURE);
-
-    // запрошенный вывод GL-информации
-    std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
-    std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
-    std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
-    std::cout << "GLSL: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-}
-
-void Application::run() { loop(); }
-
-void Application::loop() {
-    // Собрали цепочку: Scale -> Rotation (динамика через update) -> Translation
-    auto chain = std::make_shared<CompositeTransform>();
-    chain->add(std::make_shared<Scale>(glm::vec3(0.8f)));
-    auto rot = std::make_shared<Rotation>(0.0f, glm::vec3(0, 0, 1));
-    chain->add(rot);
-    chain->add(std::make_shared<Translation>(glm::vec3(0.2f, 0.0f, 0.0f)));
-
-    quadObj->setTransform(chain);
-
-    double prev = glfwGetTime();
-
-    while (!glfwWindowShouldClose(window)) {
-        double now = glfwGetTime();
-        float dt = static_cast<float>(now - prev);
-        prev = now;
-
-        // обновляем «живые» трансформации
-        rot->setAngle(rot->getAngle() + 1.0f * dt); // 1 рад/сек
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        scene.update(dt);
-        scene.render();
-
-        glfwPollEvents();
-        glfwSwapBuffers(window);
+    if (glewInit() != GLEW_OK) {
+        throw std::runtime_error("Failed to initialize GLEW");
     }
+    glEnable(GL_DEPTH_TEST);
+
+    // Вывод информации о версии OpenGL (полезно для отладки)
+    std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 }

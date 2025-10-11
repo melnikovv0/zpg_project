@@ -1,2 +1,19 @@
-﻿  CompositeTransform.cpp
+﻿  Application.cpp
+  ApplicationController.cpp
+  CompositeTransform.cpp
+  DrawableObject.cpp
+  main.cpp
+  Model.cpp
+  ModelManager.cpp
+  Rotation.cpp
+  Scale.cpp
+  Scene.cpp
+  SceneBuilders.cpp
+  Shader.cpp
+  ShaderManager.cpp
+  ShaderProgram.cpp
+  Source.cpp
+  Translation.cpp
+  Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   zpg.vcxproj -> D:\VSB\3_kurz\zpg\zpg\x64\Debug\zpg.exe

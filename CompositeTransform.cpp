@@ -10,10 +10,9 @@ void CompositeTransform::clear() {
 }
 
 glm::mat4 CompositeTransform::matrix() const {
-    glm::mat4 m(1.0f);
- 
+    glm::mat4 m(1.0f); // „prázdná“ transformace
     for (const auto& c : children) {
-        m = m * c->matrix();
+        m = c->matrix() * m; // Умножаем справа налево
     }
     return m;
 }

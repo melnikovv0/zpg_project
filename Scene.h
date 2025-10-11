@@ -13,6 +13,10 @@ public:
     void render() const;
     void clear();
 
+    void setUpdateCallback(const std::function<void(float)>& callback);
+
 private:
     std::vector<DrawableObject> objects;
+
+    std::function<void(float)> m_UpdateCallback;
 };

@@ -12,7 +12,7 @@ public:
         : model(model), program(program) {
     }
 
-    // Оставляем совместимость: это «базовая» модельная матрица (разовая поза)
+    //statická poloha
     void setModelMatrix(const glm::mat4& m) { baseMatrix = m; }
 
     // Новое: «живые» трансформации (можно передать CompositeTransform или любой лист)

@@ -1,5 +1,4 @@
-// Scale.h
-#pragma once
+﻿#pragma once
 #include "Transformation.h"
 #include <glm/vec3.hpp>
 
@@ -14,5 +13,5 @@ public:
     glm::mat4 matrix() const override;
 
 private:
-    glm::vec3 s; // ??????? ?? ????
+    glm::vec3 s; // „paměť“ objektu
 };

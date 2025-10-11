@@ -10,7 +10,7 @@ void DrawableObject::update(float dt) {
 void DrawableObject::draw() const {
     if (!program || !model) return;
 
-    // Итоговая матрица: базовая * (собранные трансформации)
+    //  Výsledná matice: základ * (sebrané transformace)
     glm::mat4 M = baseMatrix;
     if (transform) M = M * transform->matrix();
 

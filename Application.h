@@ -1,12 +1,10 @@
 ﻿#pragma once
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
-#include "Scene.h"
+#include <memory>
 
-class ShaderProgram;
-class Model;
-class DrawableObject;
+// Прямые объявления
+struct GLFWwindow;
+class ApplicationController;
 
 class Application {
 public:
@@ -16,18 +14,13 @@ public:
     void run();
 
 private:
-    GLFWwindow* window = nullptr;
-
     void initGLFW(int width, int height, const char* title);
     void initGLEW();
-    void loop();
 
-    Scene scene;                     // сцена как поле
+    GLFWwindow* m_Window = nullptr;
+    std::unique_ptr<ApplicationController> m_Controller;
 
-    ShaderProgram* progGreen = nullptr;
-    Model* modelSquare = nullptr;
-
-    // «ручка» на объект квадрата + угол вращения
-    DrawableObject* quadObj = nullptr;
-    float angle = 0.0f;
+    // Статические функции-обертки для колбэков GLFW
+    // Статические "мосты" для системы колбэков GLFW
+    static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 };
