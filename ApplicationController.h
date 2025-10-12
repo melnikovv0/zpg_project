@@ -3,9 +3,9 @@
 #include <map>
 #include <memory>
 #include "Scene.h"
-#include "ModelManager.h"    // <--- ДОБАВЛЯЕМ
-#include "ShaderManager.h"   // <--- ДОБАВЛЯЕМ
-#include "Camera.h" // <--- Подключаем камеру
+#include "ModelManager.h"    
+#include "ShaderManager.h"   
+#include "Camera.h" 
 
 class Model;
 class ShaderProgram;
@@ -38,12 +38,10 @@ private:
     std::map<int, Scene> scenes;
     Scene* activeScene = nullptr;
 
-    // --- ДОБАВЛЕНО: Менеджеры ресурсов ---
     ModelManager  m_ModelManager;
     ShaderManager m_ShaderManager;
     std::unique_ptr<Camera> m_Camera;
 
-    // --- Переменные для управления мышью ---
     double lastMouseX = 0.0;
     double lastMouseY = 0.0;
     bool firstMouse = true;

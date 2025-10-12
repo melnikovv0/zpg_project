@@ -1,4 +1,3 @@
-// Scale.cpp
 #include "Scale.h"
 #include <glm/gtc/matrix_transform.hpp>
 

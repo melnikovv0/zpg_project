@@ -4,7 +4,7 @@
 
 class Model {
 public:
-    // vertices: interleaved xyz nx ny nz (6 float на вершину)
+  
     explicit Model(const std::vector<float>& vertices);
     ~Model();
 

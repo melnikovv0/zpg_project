@@ -15,7 +15,7 @@ public:
     //statická poloha
     void setModelMatrix(const glm::mat4& m) { baseMatrix = m; }
 
-    // Новое: «живые» трансформации (можно передать CompositeTransform или любой лист)
+   
     void setTransform(const std::shared_ptr<Transformation>& t) { transform = t; }
 
     void update(float dt);
@@ -25,6 +25,6 @@ private:
     Model* model = nullptr;
     ShaderProgram* program = nullptr;
 
-    glm::mat4 baseMatrix{ 1.0f };                          // то, что ты раньше задавал setModelMatrix()
-    std::shared_ptr<Transformation> transform = nullptr; // дерево трансформаций
+    glm::mat4 baseMatrix{ 1.0f };                          
+    std::shared_ptr<Transformation> transform = nullptr; 
 };

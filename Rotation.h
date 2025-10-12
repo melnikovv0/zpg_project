@@ -1,5 +1,4 @@
-﻿// Rotation.h
-#pragma once
+﻿#pragma once
 #include "Transformation.h"
 #include <glm/vec3.hpp>
 

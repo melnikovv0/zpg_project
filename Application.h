@@ -2,7 +2,6 @@
 
 #include <memory>
 
-// Прямые объявления
 struct GLFWwindow;
 class ApplicationController;
 
@@ -20,8 +19,7 @@ private:
     GLFWwindow* m_Window = nullptr;
     std::unique_ptr<ApplicationController> m_Controller;
 
-    // Статические функции-обертки для колбэков GLFW
-    // Статические "мосты" для системы колбэков GLFW
+
     static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-    static void mouseCallback(GLFWwindow* window, double xpos, double ypos); // <--- ЭТА СТРОКА ДОЛЖНА БЫТЬ
+    static void mouseCallback(GLFWwindow* window, double xpos, double ypos); 
 };

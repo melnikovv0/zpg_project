@@ -1,5 +1,4 @@
-﻿// Scene.cpp
-#include "Scene.h"
+﻿#include "Scene.h"
 
 DrawableObject& Scene::add(Model* model, ShaderProgram* program) { // predat novy object
     objects.emplace_back(model, program); // vytvr novy DO hned na konci seznamu, předáním modelu a programu do konstruktoru.“
@@ -7,12 +6,10 @@ DrawableObject& Scene::add(Model* model, ShaderProgram* program) { // predat nov
 }
 
 void Scene::update(float dt) {
-    // Сначала вызываем update у всех объектов, как и раньше
     for (auto& o : objects) {
         o.update(dt);
     }
 
-    // --- ДОБАВЛЕНО: Вызываем наш специальный колбэк для этой сцены ---
     if (m_UpdateCallback) {
         m_UpdateCallback(dt);
     }

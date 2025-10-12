@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 
-// Композит: хранит набор дочерних трансформаций и перемножает их по порядку добавления
+
 class CompositeTransform : public Transformation {
 public:
     void add(const std::shared_ptr<Transformation>& t);//Přidat „detail“

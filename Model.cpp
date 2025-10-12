@@ -1,7 +1,7 @@
 ﻿#include "Model.h"
 
 Model::Model(const std::vector<float>& vertices) {
-    vertexCount = static_cast<GLsizei>(vertices.size() / 6); // /6: pos(3)+normal(3)
+    vertexCount = static_cast<GLsizei>(vertices.size() / 6); 
 
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
