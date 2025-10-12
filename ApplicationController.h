@@ -5,6 +5,7 @@
 #include "Scene.h"
 #include "ModelManager.h"    // <--- ДОБАВЛЯЕМ
 #include "ShaderManager.h"   // <--- ДОБАВЛЯЕМ
+#include "Camera.h" // <--- Подключаем камеру
 
 class Model;
 class ShaderProgram;
@@ -23,10 +24,16 @@ public:
     void render();
     void keyCallback(int key, int scancode, int action, int mods);
 
+    void mouseCallback(double xpos, double ypos);
+
+    void scrollCallback(double xoffset, double yoffset);
+
 private:
     void switchScene(int sceneNumber);
 
     GLFWwindow* window;
+    int m_width;
+    int m_height;
 
     std::map<int, Scene> scenes;
     Scene* activeScene = nullptr;
@@ -34,4 +41,10 @@ private:
     // --- ДОБАВЛЕНО: Менеджеры ресурсов ---
     ModelManager  m_ModelManager;
     ShaderManager m_ShaderManager;
+    std::unique_ptr<Camera> m_Camera;
+
+    // --- Переменные для управления мышью ---
+    double lastMouseX = 0.0;
+    double lastMouseY = 0.0;
+    bool firstMouse = true;
 };

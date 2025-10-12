@@ -27,6 +27,7 @@ Application::Application(int width, int height, const char* title) {
 
     // Устанавливаем колбэки
     glfwSetKeyCallback(m_Window, Application::keyCallback);
+    glfwSetCursorPosCallback(m_Window, Application::mouseCallback);
    
 }
 
@@ -66,6 +67,14 @@ void Application::keyCallback(GLFWwindow* window, int key, int scancode, int act
     if (controller) {
         // И передаем событие ему на обработку
         controller->keyCallback(key, scancode, action, mods);
+    }
+}
+
+void Application::mouseCallback(GLFWwindow* window, double xpos, double ypos) {
+    auto* controller = static_cast<ApplicationController*>(glfwGetWindowUserPointer(window));
+    if (controller) {
+        // Передаем событие контроллеру
+        controller->mouseCallback(xpos, ypos);
     }
 }
 

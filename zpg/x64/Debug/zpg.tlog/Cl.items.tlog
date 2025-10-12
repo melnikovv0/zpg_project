@@ -1,5 +1,6 @@
 D:\VSB\3_kurz\zpg\zpg\Application.cpp;D:\VSB\3_kurz\zpg\zpg\zpg\x64\Debug\Application.obj
 D:\VSB\3_kurz\zpg\zpg\ApplicationController.cpp;D:\VSB\3_kurz\zpg\zpg\zpg\x64\Debug\ApplicationController.obj
+D:\VSB\3_kurz\zpg\zpg\Camera.cpp;D:\VSB\3_kurz\zpg\zpg\zpg\x64\Debug\Camera.obj
 D:\VSB\3_kurz\zpg\zpg\CompositeTransform.cpp;D:\VSB\3_kurz\zpg\zpg\zpg\x64\Debug\CompositeTransform.obj
 D:\VSB\3_kurz\zpg\zpg\DrawableObject.cpp;D:\VSB\3_kurz\zpg\zpg\zpg\x64\Debug\DrawableObject.obj
 D:\VSB\3_kurz\zpg\zpg\main.cpp;D:\VSB\3_kurz\zpg\zpg\zpg\x64\Debug\main.obj
@@ -12,5 +13,4 @@ D:\VSB\3_kurz\zpg\zpg\SceneBuilders.cpp;D:\VSB\3_kurz\zpg\zpg\zpg\x64\Debug\Scen
 D:\VSB\3_kurz\zpg\zpg\Shader.cpp;D:\VSB\3_kurz\zpg\zpg\zpg\x64\Debug\Shader.obj
 D:\VSB\3_kurz\zpg\zpg\ShaderManager.cpp;D:\VSB\3_kurz\zpg\zpg\zpg\x64\Debug\ShaderManager.obj
 D:\VSB\3_kurz\zpg\zpg\ShaderProgram.cpp;D:\VSB\3_kurz\zpg\zpg\zpg\x64\Debug\ShaderProgram.obj
-D:\VSB\3_kurz\zpg\zpg\Source.cpp;D:\VSB\3_kurz\zpg\zpg\zpg\x64\Debug\Source.obj
 D:\VSB\3_kurz\zpg\zpg\Translation.cpp;D:\VSB\3_kurz\zpg\zpg\zpg\x64\Debug\Translation.obj

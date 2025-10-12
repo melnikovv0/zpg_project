@@ -23,4 +23,5 @@ private:
     // Статические функции-обертки для колбэков GLFW
     // Статические "мосты" для системы колбэков GLFW
     static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    static void mouseCallback(GLFWwindow* window, double xpos, double ypos); // <--- ЭТА СТРОКА ДОЛЖНА БЫТЬ
 };

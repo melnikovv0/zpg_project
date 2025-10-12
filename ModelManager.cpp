@@ -4,13 +4,13 @@
 #include "myTriangle.h" // Предполагаем, что вы создали такой файл
 #include "tree.h"
 #include "sphere.h"
+#include "bushes.h" 
 
 
 #include <vector>
 
 void ModelManager::loadModels() {
-    // --- ЗАДАЧА 5: Создаем модель треугольника ---
-    // 1. Конвертируем C-массив 'myTriangle' из myTriange.h в std::vector
+
     const float* tri_begin = myTriangle;
     const float* tri_end = tri_begin + sizeof(myTriangle) / sizeof(float);
     std::vector<float> triangleVertices(tri_begin, tri_end);
@@ -25,14 +25,21 @@ void ModelManager::loadModels() {
     std::vector<float> treeVertices(tree_begin, tree_end);
     m_Models["tree"] = std::make_unique<Model>(treeVertices);
 
-    // Для задачи 6 и 7 вы будете так же подключать sphere.h, tree.h и т.д.
-    // 
-    // // --- ДОБАВЛЕНО: Модель сферы ---
+    
+  
     const float* sphere_begin = sphere;
     const float* sphere_end = sphere_begin + sizeof(sphere) / sizeof(float);
     std::vector<float> sphereVertices(sphere_begin, sphere_end);
     m_Models["sphere"] = std::make_unique<Model>(sphereVertices);
-    // и добавлять их в m_Models под своими именами.
+
+    const float* bush_begin = bushes;
+    const float* bush_end = bush_begin + sizeof(bushes) / sizeof(float);
+    std::vector<float> bushVertices(bush_begin, bush_end);
+    m_Models["bush"] = std::make_unique<Model>(bushVertices);
+
+
+
+    
 }
 
 Model* ModelManager::getModel(const std::string& name) {
