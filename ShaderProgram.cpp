@@ -2,9 +2,9 @@
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
-ShaderProgram::ShaderProgram(const char* vertexSrc, const char* fragmentSrc) {
-    Shader vs(vertexSrc, GL_VERTEX_SHADER);
-    Shader fs(fragmentSrc, GL_FRAGMENT_SHADER);
+ShaderProgram::ShaderProgram(const std::string& vertexFilepath, const std::string& fragmentFilepath) {
+    Shader vs(vertexFilepath, GL_VERTEX_SHADER);
+    Shader fs(fragmentFilepath, GL_FRAGMENT_SHADER);
     link(vs, fs);
 }
 
@@ -26,6 +26,14 @@ void ShaderProgram::setUniform(const char* name, float v) const {
 void ShaderProgram::setUniform(const char* name, const glm::mat4& m) const {
     GLint loc = glGetUniformLocation(programId, name);
     if (loc != -1) glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(m));
+}
+
+void ShaderProgram::setUniform(const char* name, const glm::vec3& v) const {
+    GLint loc = glGetUniformLocation(programId, name);
+    if (loc != -1) {
+        // Используем glUniform3fv для отправки вектора из 3-х float'ов
+        glUniform3fv(loc, 1, glm::value_ptr(v));
+    }
 }
 
 void ShaderProgram::link(const Shader& vs, const Shader& fs) {

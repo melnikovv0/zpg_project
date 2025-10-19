@@ -3,9 +3,16 @@
 #include <map>
 #include <memory>
 #include "Scene.h"
+<<<<<<< HEAD
 #include "ModelManager.h"    
 #include "ShaderManager.h"   
 #include "Camera.h" 
+=======
+#include "ModelManager.h"    // <--- ДОБАВЛЯЕМ
+#include "ShaderManager.h"   // <--- ДОБАВЛЯЕМ
+#include "Camera.h"
+#include "Light.h"// <--- Подключаем камеру
+>>>>>>> develop
 
 class Model;
 class ShaderProgram;
@@ -13,7 +20,7 @@ struct GLFWwindow;
 
 class ApplicationController {
 public:
-    explicit ApplicationController(GLFWwindow* window);
+    explicit ApplicationController(GLFWwindow* window, int width, int height);
     ~ApplicationController();
 
     ApplicationController(const ApplicationController&) = delete;
@@ -41,6 +48,7 @@ private:
     ModelManager  m_ModelManager;
     ShaderManager m_ShaderManager;
     std::unique_ptr<Camera> m_Camera;
+    std::unique_ptr<Light> m_Light;
 
     double lastMouseX = 0.0;
     double lastMouseY = 0.0;

@@ -17,7 +17,12 @@ Application::Application(int width, int height, const char* title) {
     initGLFW(width, height, title);
     initGLEW();
 
+<<<<<<< HEAD
     m_Controller = std::make_unique<ApplicationController>(m_Window);
+=======
+    // Создаем наш контроллер. unique_ptr позаботится о его удалении.
+    m_Controller = std::make_unique<ApplicationController>(m_Window, width, height);
+>>>>>>> develop
 
 
     glfwSetWindowUserPointer(m_Window, m_Controller.get());

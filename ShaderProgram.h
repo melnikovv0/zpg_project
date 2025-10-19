@@ -5,13 +5,14 @@
 
 class ShaderProgram {
 public:
-    ShaderProgram(const char* vertexSrc, const char* fragmentSrc);
+    ShaderProgram(const std::string& vertexFilepath, const std::string& fragmentFilepath);
     ~ShaderProgram();
 
     void use() const;
 
     void setUniform(const char* name, float v) const;
     void setUniform(const char* name, const glm::mat4& m) const;
+    void setUniform(const char* name, const glm::vec3& v) const;
 
 private:
     GLuint programId = 0;

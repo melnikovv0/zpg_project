@@ -1,24 +1,2 @@
-﻿  Application.cpp
-  ApplicationController.cpp
-  Camera.cpp
-  CompositeTransform.cpp
-  DrawableObject.cpp
-  Model.cpp
-  ModelManager.cpp
-  Rotation.cpp
-  Scale.cpp
-  Scene.cpp
-  SceneBuilders.cpp
-D:\VSB\3_kurz\zpg\zpg\SceneBuilders.cpp(70,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VSB\3_kurz\zpg\zpg\SceneBuilders.cpp(71,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VSB\3_kurz\zpg\zpg\SceneBuilders.cpp(72,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VSB\3_kurz\zpg\zpg\SceneBuilders.cpp(73,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VSB\3_kurz\zpg\zpg\SceneBuilders.cpp(86,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VSB\3_kurz\zpg\zpg\SceneBuilders.cpp(87,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VSB\3_kurz\zpg\zpg\SceneBuilders.cpp(88,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VSB\3_kurz\zpg\zpg\SceneBuilders.cpp(89,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  ShaderManager.cpp
-  Translation.cpp
-  main.cpp
-  Generating Code...
+﻿  SceneBuilders.cpp
   zpg.vcxproj -> D:\VSB\3_kurz\zpg\zpg\x64\Debug\zpg.exe

@@ -161,9 +161,11 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CompositeTransform.h" />
     <ClInclude Include="DrawableObject.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelManager.h" />
     <ClInclude Include="myTriangle.h" />
+    <ClInclude Include="plain.h" />
     <ClInclude Include="Rotation.h" />
     <ClInclude Include="Scale.h" />
     <ClInclude Include="Scene.h" />
@@ -175,6 +177,17 @@
     <ClInclude Include="Transformation.h" />
     <ClInclude Include="Translation.h" />
     <ClInclude Include="tree.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="blinn.frag" />
+    <None Include="constant.frag" />
+    <None Include="green.frag" />
+    <None Include="lambert.frag" />
+    <None Include="normal_color.frag" />
+    <None Include="normal_color.vert" />
+    <None Include="phong.frag" />
+    <None Include="phong.vert" />
+    <None Include="simple.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
