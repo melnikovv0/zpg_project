@@ -4,8 +4,8 @@
 #include <GLFW/glfw3.h>
 
 // Конструктор пока остается простым
-ApplicationController::ApplicationController(GLFWwindow* window)
-    : window(window) {
+ApplicationController::ApplicationController(GLFWwindow* window, int width, int height)
+    : window(window), m_width(width), m_height(height) {
 }
 
 // Деструктор пока пустой, т.к. unique_ptr все чистит сам
@@ -17,6 +17,8 @@ void ApplicationController::init() {
     m_ShaderManager.loadShaders();
 
     m_Camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
+
+    m_Light = std::make_unique<Light>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
 
     // 2. Строим сцену №1
 
@@ -55,7 +57,7 @@ void ApplicationController::update(float dt) {
 
 void ApplicationController::render() {
     // Убеждаемся, что сцена и камера существуют
-    if (activeScene && m_Camera) {
+    if (activeScene && m_Camera && m_Light ) {
 
         // -------------------- ЗАМЕНИТЕ СТАРЫЙ БЛОК НА ЭТОТ --------------------
 
@@ -66,11 +68,21 @@ void ApplicationController::render() {
         float aspectRatio = (m_width > 0 && m_height > 0) ? (float)m_width / (float)m_height : 1.0f;
         glm::mat4 projection = glm::perspective(glm::radians(m_Camera->Zoom), aspectRatio, 0.1f, 100.0f);
 
+        // Данные о свете и наблюдателе
+        glm::vec3 lightPos = m_Light->Position;
+        glm::vec3 lightColor = m_Light->Color;
+        glm::vec3 viewPos = m_Camera->Position;
+
         // 3. Отправляем настоящие матрицы во все шейдеры
         for (auto const& [name, shader] : m_ShaderManager.getAllShaders()) {
             shader->use();
             shader->setUniform("viewMatrix", view);
             shader->setUniform("projectionMatrix", projection);
+
+            // Отправляем данные о свете
+            shader->setUniform("lightPos", lightPos);
+            shader->setUniform("viewPos", viewPos);
+            shader->setUniform("lightColor", lightColor);
         }
 
         // --------------------------------------------------------------------

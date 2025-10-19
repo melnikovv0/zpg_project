@@ -128,5 +128,22 @@
     <ClInclude Include="bushes.h">
       <Filter>models</Filter>
     </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plain.h">
+      <Filter>models</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="blinn.frag" />
+    <None Include="constant.frag" />
+    <None Include="green.frag" />
+    <None Include="lambert.frag" />
+    <None Include="normal_color.frag" />
+    <None Include="normal_color.vert" />
+    <None Include="phong.frag" />
+    <None Include="phong.vert" />
+    <None Include="simple.vert" />
   </ItemGroup>
 </Project>

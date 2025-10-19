@@ -18,7 +18,7 @@ Application::Application(int width, int height, const char* title) {
     initGLEW();
 
     // Создаем наш контроллер. unique_ptr позаботится о его удалении.
-    m_Controller = std::make_unique<ApplicationController>(m_Window);
+    m_Controller = std::make_unique<ApplicationController>(m_Window, width, height);
 
     // ВАЖНЫЙ ТРЮК: "сохраняем" указатель на наш контроллер внутри окна GLFW,
     // чтобы статические колбэки могли его оттуда достать.

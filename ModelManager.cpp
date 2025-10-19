@@ -5,7 +5,7 @@
 #include "tree.h"
 #include "sphere.h"
 #include "bushes.h" 
-
+#include "plain.h"
 
 #include <vector>
 
@@ -25,8 +25,6 @@ void ModelManager::loadModels() {
     std::vector<float> treeVertices(tree_begin, tree_end);
     m_Models["tree"] = std::make_unique<Model>(treeVertices);
 
-    
-  
     const float* sphere_begin = sphere;
     const float* sphere_end = sphere_begin + sizeof(sphere) / sizeof(float);
     std::vector<float> sphereVertices(sphere_begin, sphere_end);
@@ -36,6 +34,13 @@ void ModelManager::loadModels() {
     const float* bush_end = bush_begin + sizeof(bushes) / sizeof(float);
     std::vector<float> bushVertices(bush_begin, bush_end);
     m_Models["bush"] = std::make_unique<Model>(bushVertices);
+
+    const float* plain_begin = plain;
+    const float* plain_end = plain_begin + sizeof(plain) / sizeof(float);
+    std::vector<float> plainVertices(plain_begin, plain_end);
+    m_Models["plain"] = std::make_unique<Model>(plainVertices);
+
+
 
 
 

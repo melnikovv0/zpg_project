@@ -1,2 +1,2 @@
-﻿LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+﻿  SceneBuilders.cpp
   zpg.vcxproj -> D:\VSB\3_kurz\zpg\zpg\x64\Debug\zpg.exe

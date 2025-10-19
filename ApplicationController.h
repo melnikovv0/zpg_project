@@ -5,7 +5,8 @@
 #include "Scene.h"
 #include "ModelManager.h"    // <--- ДОБАВЛЯЕМ
 #include "ShaderManager.h"   // <--- ДОБАВЛЯЕМ
-#include "Camera.h" // <--- Подключаем камеру
+#include "Camera.h"
+#include "Light.h"// <--- Подключаем камеру
 
 class Model;
 class ShaderProgram;
@@ -13,7 +14,7 @@ struct GLFWwindow;
 
 class ApplicationController {
 public:
-    explicit ApplicationController(GLFWwindow* window);
+    explicit ApplicationController(GLFWwindow* window, int width, int height);
     ~ApplicationController();
 
     ApplicationController(const ApplicationController&) = delete;
@@ -42,6 +43,7 @@ private:
     ModelManager  m_ModelManager;
     ShaderManager m_ShaderManager;
     std::unique_ptr<Camera> m_Camera;
+    std::unique_ptr<Light> m_Light;
 
     // --- Переменные для управления мышью ---
     double lastMouseX = 0.0;
