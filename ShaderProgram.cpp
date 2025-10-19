@@ -31,7 +31,6 @@ void ShaderProgram::setUniform(const char* name, const glm::mat4& m) const {
 void ShaderProgram::setUniform(const char* name, const glm::vec3& v) const {
     GLint loc = glGetUniformLocation(programId, name);
     if (loc != -1) {
-        // Используем glUniform3fv для отправки вектора из 3-х float'ов
         glUniform3fv(loc, 1, glm::value_ptr(v));
     }
 }

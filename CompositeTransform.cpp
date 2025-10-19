@@ -10,7 +10,7 @@ void CompositeTransform::clear() {
 }
 
 glm::mat4 CompositeTransform::matrix() const {
-    glm::mat4 m(1.0f); // „prázdná“ transformace
+    glm::mat4 m(1.0f); 
     for (const auto& c : children) {
         m = c->matrix() * m; 
     }

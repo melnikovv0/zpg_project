@@ -6,8 +6,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <memory>                  // Дstd::unique_ptr , std::make_unique
-#include <stdexcept>               //  std::runtime_error
+#include <memory>                 
+#include <stdexcept>             
 #include <GLFW/glfw3.h>
 
 
@@ -17,13 +17,8 @@ Application::Application(int width, int height, const char* title) {
     initGLFW(width, height, title);
     initGLEW();
 
-<<<<<<< HEAD
-    m_Controller = std::make_unique<ApplicationController>(m_Window);
-=======
-    // Создаем наш контроллер. unique_ptr позаботится о его удалении.
-    m_Controller = std::make_unique<ApplicationController>(m_Window, width, height);
->>>>>>> develop
 
+    m_Controller = std::make_unique<ApplicationController>(m_Window, width, height);
 
     glfwSetWindowUserPointer(m_Window, m_Controller.get());
 

@@ -3,7 +3,6 @@
 #include "SceneBuilders.h"
 #include <GLFW/glfw3.h>
 
-// Конструктор пока остается простым
 ApplicationController::ApplicationController(GLFWwindow* window, int width, int height)
     : window(window), m_width(width), m_height(height) {
 }
@@ -18,7 +17,6 @@ void ApplicationController::init() {
 
     m_Light = std::make_unique<Light>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
 
-    // 2. Строим сцену №1
 
     std::cout << "Building Scene 1..." << std::endl;
     SceneBuilders::buildScene1(scenes[1], m_ModelManager, m_ShaderManager);
@@ -41,7 +39,7 @@ void ApplicationController::update(float dt) {
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         m_Camera->processKeyboard(RIGHT, dt);
 
-    std::cout << "Camera Pos: x=" << m_Camera->Position.x << ", z=" << m_Camera->Position.z << "\r";
+    std::cout << " Camera Pos: x=" << m_Camera->Position.x << ", z=" << m_Camera->Position.z << "\r";
 
     if (activeScene) {
         activeScene->update(dt);
@@ -50,7 +48,6 @@ void ApplicationController::update(float dt) {
 
 void ApplicationController::render() {
 
-    // Убеждаемся, что сцена и камера существуют
     if (activeScene && m_Camera && m_Light ) {
 
 
@@ -59,19 +56,15 @@ void ApplicationController::render() {
         float aspectRatio = (m_width > 0 && m_height > 0) ? (float)m_width / (float)m_height : 1.0f;
         glm::mat4 projection = glm::perspective(glm::radians(m_Camera->Zoom), aspectRatio, 0.1f, 100.0f);
 
-
-        // Данные о свете и наблюдателе
         glm::vec3 lightPos = m_Light->Position;
         glm::vec3 lightColor = m_Light->Color;
         glm::vec3 viewPos = m_Camera->Position;
 
-        // 3. Отправляем настоящие матрицы во все шейдеры
         for (auto const& [name, shader] : m_ShaderManager.getAllShaders()) {
             shader->use();
             shader->setUniform("viewMatrix", view);
             shader->setUniform("projectionMatrix", projection);
 
-            // Отправляем данные о свете
             shader->setUniform("lightPos", lightPos);
             shader->setUniform("viewPos", viewPos);
             shader->setUniform("lightColor", lightColor);

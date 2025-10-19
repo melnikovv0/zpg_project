@@ -13,5 +13,5 @@ public:
     glm::mat4 matrix() const override;
 
 private:
-    glm::vec3 t; // смещение
+    glm::vec3 t;
 };

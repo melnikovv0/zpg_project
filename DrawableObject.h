@@ -14,7 +14,6 @@ public:
         : model(model), program(program) {
     }
 
-    //statická poloha
     void setModelMatrix(const glm::mat4& m) { baseMatrix = m; }
 
    
@@ -29,13 +28,8 @@ private:
     Model* model = nullptr;
     ShaderProgram* program = nullptr;
 
-<<<<<<< HEAD
     glm::mat4 baseMatrix{ 1.0f };                          
     std::shared_ptr<Transformation> transform = nullptr; 
-=======
-    glm::mat4 baseMatrix{ 1.0f };                          // то, что ты раньше задавал setModelMatrix()
-    std::shared_ptr<Transformation> transform = nullptr; // дерево трансформаций
 
     std::map<std::string, glm::vec3> m_uniformsVec3;
->>>>>>> develop
 };

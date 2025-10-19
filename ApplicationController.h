@@ -3,16 +3,12 @@
 #include <map>
 #include <memory>
 #include "Scene.h"
-<<<<<<< HEAD
-#include "ModelManager.h"    
-#include "ShaderManager.h"   
-#include "Camera.h" 
-=======
-#include "ModelManager.h"    // <--- ДОБАВЛЯЕМ
-#include "ShaderManager.h"   // <--- ДОБАВЛЯЕМ
+
+#include "ModelManager.h"   
+#include "ShaderManager.h"  
 #include "Camera.h"
-#include "Light.h"// <--- Подключаем камеру
->>>>>>> develop
+#include "Light.h"
+
 
 class Model;
 class ShaderProgram;

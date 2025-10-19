@@ -16,6 +16,6 @@ public:
     glm::mat4 matrix() const override;
 
 private:
-    float angle;     // радианы
-    glm::vec3 axis;  // ось (нормализуем при применении)
+    float angle;     
+    glm::vec3 axis;  
 };
