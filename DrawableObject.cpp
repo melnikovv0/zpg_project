@@ -26,3 +26,8 @@ void DrawableObject::draw() const {
     }
     model->draw();
 }
+
+ShaderProgram* DrawableObject::getShaderProgram() const
+{
+    return program;
+}

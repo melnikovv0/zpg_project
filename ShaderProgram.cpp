@@ -1,4 +1,6 @@
 ﻿#include "ShaderProgram.h"
+#include "Camera.h"
+#include "LightManager.h" 
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -16,6 +18,40 @@ ShaderProgram::~ShaderProgram() {
 
 void ShaderProgram::use() const {
     glUseProgram(programId);
+
+
+}
+
+
+void ShaderProgram::update(ISubject* subject) {
+    if (!subject) return;
+
+    this->use(); 
+
+
+    if (Camera* camera = dynamic_cast<Camera*>(subject)) {
+        this->setUniform("viewMatrix", camera->getViewMatrix());
+        this->setUniform("viewPos", camera->Position);
+    }
+    else if (LightManager* lightManager = dynamic_cast<LightManager*>(subject)) {
+        const auto& lights = lightManager->getLights();
+        this->setUniform("numberOfLights", (int)lights.size());
+
+        for (int i = 0; i < lights.size(); ++i) {
+            std::string baseName = "lights[" + std::to_string(i) + "]";
+            this->setUniform((baseName + ".position").c_str(), lights[i]->getPosition());
+            this->setUniform((baseName + ".ambient").c_str(), lights[i]->getAmbient());
+            this->setUniform((baseName + ".diffuse").c_str(), lights[i]->getDiffuse());
+            this->setUniform((baseName + ".specular").c_str(), lights[i]->getSpecular());
+            this->setUniform((baseName + ".constant").c_str(), lights[i]->getConstant());
+            this->setUniform((baseName + ".linear").c_str(), lights[i]->getLinear());
+            this->setUniform((baseName + ".quadratic").c_str(), lights[i]->getQuadratic());
+        }
+    }
+}
+void ShaderProgram::setUniform(const char* name, int v) const {
+    GLint loc = glGetUniformLocation(programId, name);
+    if (loc != -1) glUniform1i(loc, v);
 }
 
 void ShaderProgram::setUniform(const char* name, float v) const {

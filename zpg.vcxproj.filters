@@ -66,6 +66,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="LightManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -137,19 +140,26 @@
     <ClInclude Include="plain.h">
       <Filter>models</Filter>
     </ClInclude>
+    <ClInclude Include="IObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ISubject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="LightManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="blinn.frag" />
-    <None Include="constant.frag" />
-    <None Include="green.frag" />
-    <None Include="lambert.frag" />
-    <None Include="normal_color.frag" />
-    <None Include="normal_color.vert" />
-    <None Include="phong.frag" />
-    <None Include="phong.vert" />
-    <None Include="simple.vert" />
+    <None Include="fragment_shader_blinn.glsl" />
+    <None Include="fragment_shader_constant.glsl" />
+    <None Include="fragment_shader_green.glsl" />
+    <None Include="fragment_shader_lambert.glsl" />
+    <None Include="fragment_shader_normal_visualizer.glsl" />
+    <None Include="vertex_shader_normal_transform.glsl" />
+    <None Include="fragment_shader_phong.glsl" />
+    <None Include="vertex_shader_lighting_transform.glsl" />
+    <None Include="vertex_shader_simple_transform.glsl" />
+    <None Include="fragment_shader_phong_multi.glsl" />
   </ItemGroup>
 </Project>

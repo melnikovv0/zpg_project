@@ -7,7 +7,8 @@
 #include "ModelManager.h"   
 #include "ShaderManager.h"  
 #include "Camera.h"
-#include "Light.h"
+#include "LightManager.h"
+
 
 
 class Model;
@@ -44,7 +45,7 @@ private:
     ModelManager  m_ModelManager;
     ShaderManager m_ShaderManager;
     std::unique_ptr<Camera> m_Camera;
-    std::unique_ptr<Light> m_Light;
+    LightManager m_lightManager;
 
     double lastMouseX = 0.0;
     double lastMouseY = 0.0;

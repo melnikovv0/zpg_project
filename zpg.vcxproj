@@ -142,6 +142,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CompositeTransform.cpp" />
     <ClCompile Include="DrawableObject.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -162,6 +163,8 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CompositeTransform.h" />
     <ClInclude Include="DrawableObject.h" />
+    <ClInclude Include="IObserver.h" />
+    <ClInclude Include="ISubject.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="Model.h" />
@@ -181,15 +184,16 @@
     <ClInclude Include="tree.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="blinn.frag" />
-    <None Include="constant.frag" />
-    <None Include="green.frag" />
-    <None Include="lambert.frag" />
-    <None Include="normal_color.frag" />
-    <None Include="normal_color.vert" />
-    <None Include="phong.frag" />
-    <None Include="phong.vert" />
-    <None Include="simple.vert" />
+    <None Include="fragment_shader_blinn.glsl" />
+    <None Include="fragment_shader_constant.glsl" />
+    <None Include="fragment_shader_green.glsl" />
+    <None Include="fragment_shader_lambert.glsl" />
+    <None Include="fragment_shader_normal_visualizer.glsl" />
+    <None Include="fragment_shader_phong_multi.glsl" />
+    <None Include="vertex_shader_normal_transform.glsl" />
+    <None Include="fragment_shader_phong.glsl" />
+    <None Include="vertex_shader_lighting_transform.glsl" />
+    <None Include="vertex_shader_simple_transform.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,16 +5,22 @@ void ShaderManager::loadShaders() {
 
     std::string shader_path = "";
 
-    m_Shaders["green"] = std::make_unique<ShaderProgram>(shader_path + "simple.vert", shader_path + "green.frag");
+    std::string vs_lighting_path = shader_path + "vertex_shader_lighting_transform.glsl";
 
-    m_Shaders["normal_color"] = std::make_unique<ShaderProgram>(shader_path + "normal_color.vert", shader_path + "normal_color.frag");
+    m_Shaders["phong"] = std::make_unique<ShaderProgram>(vs_lighting_path, shader_path + "fragment_shader_phong.glsl");
+    m_Shaders["blinn"] = std::make_unique<ShaderProgram>(vs_lighting_path, shader_path + "fragment_shader_blinn.glsl");
+    m_Shaders["lambert"] = std::make_unique<ShaderProgram>(vs_lighting_path, shader_path + "fragment_shader_lambert.glsl");
+    m_Shaders["constant"] = std::make_unique<ShaderProgram>(vs_lighting_path, shader_path + "fragment_shader_constant.glsl");
 
-    std::string vs_lighting_path = shader_path + "phong.vert";
-    m_Shaders["constant"] = std::make_unique<ShaderProgram>(vs_lighting_path, shader_path + "constant.frag");
-    m_Shaders["lambert"] = std::make_unique<ShaderProgram>(vs_lighting_path, shader_path + "lambert.frag");
+    m_Shaders["phong_multi"] = std::make_unique<ShaderProgram>(vs_lighting_path, shader_path + "fragment_shader_phong_multi.glsl");
 
-    m_Shaders["phong"] = std::make_unique<ShaderProgram>(vs_lighting_path, shader_path + "phong.frag");
-    m_Shaders["blinn"] = std::make_unique<ShaderProgram>(vs_lighting_path, shader_path + "blinn.frag");
+    m_Shaders["normal_color"] = std::make_unique<ShaderProgram>(shader_path + "vertex_shader_normal_transform.glsl", shader_path + "fragment_shader_normal_visualizer.glsl");
+
+
+
+    m_Shaders["green"] = std::make_unique<ShaderProgram>(shader_path + "vertex_shader_simple_transform.glsl", shader_path + "fragment_shader_green.glsl");
+
+    
 
 }
 

@@ -24,6 +24,8 @@ public:
     void update(float dt);
     void draw() const;
 
+    ShaderProgram* getShaderProgram() const;
+
 private:
     Model* model = nullptr;
     ShaderProgram* program = nullptr;
