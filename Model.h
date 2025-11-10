@@ -4,9 +4,11 @@
 
 class Model {
 public:
-  
-    explicit Model(const std::vector<float>& vertices);
+    explicit Model(const std::vector<float>& vertices, int componentsPerVertex);
     ~Model();
+
+    Model(const Model&) = delete;
+    Model& operator=(const Model&) = delete;
 
     void draw() const;
 

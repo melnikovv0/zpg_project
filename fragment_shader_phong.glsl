@@ -29,6 +29,7 @@ void main()
         vec3 lightDir = normalize(lights[0].position - FragPos);
         float diff = max(dot(norm, lightDir), 0.0);
         vec3 diffuse = lights[0].diffuse * diff;
+
         
         float specularStrength = 1.0; 
         vec3 viewDir = normalize(viewPos - FragPos); 

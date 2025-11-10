@@ -3,13 +3,10 @@
 #include <map>
 #include <memory>
 #include "Scene.h"
-
 #include "ModelManager.h"   
 #include "ShaderManager.h"  
 #include "Camera.h"
 #include "LightManager.h"
-
-
 
 class Model;
 class ShaderProgram;
@@ -27,10 +24,9 @@ public:
     void update(float dt);
     void render();
     void keyCallback(int key, int scancode, int action, int mods);
-
     void mouseCallback(double xpos, double ypos);
-
     void scrollCallback(double xoffset, double yoffset);
+    void onWindowResize(int width, int height);
 
 private:
     void switchScene(int sceneNumber);
@@ -50,4 +46,7 @@ private:
     double lastMouseX = 0.0;
     double lastMouseY = 0.0;
     bool firstMouse = true;
+
+    Light* m_flashlight = nullptr;
+    bool m_flashlightOn = true;
 };

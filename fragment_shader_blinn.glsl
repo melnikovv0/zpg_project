@@ -34,6 +34,9 @@ void main()
         vec3 halfwayDir = normalize(lightDir + viewDir); 
         float spec = pow(max(dot(norm, halfwayDir), 0.0), 32); 
         vec3 specular = lights[0].specular * spec * specularStrength;
+
+
+
         
         result = (ambient + diffuse + specular);
     }

@@ -39,13 +39,18 @@ void ShaderProgram::update(ISubject* subject) {
 
         for (int i = 0; i < lights.size(); ++i) {
             std::string baseName = "lights[" + std::to_string(i) + "]";
+
+            this->setUniform((baseName + ".type").c_str(), (int)lights[i]->getType());
             this->setUniform((baseName + ".position").c_str(), lights[i]->getPosition());
+            this->setUniform((baseName + ".direction").c_str(), lights[i]->getDirection());
             this->setUniform((baseName + ".ambient").c_str(), lights[i]->getAmbient());
             this->setUniform((baseName + ".diffuse").c_str(), lights[i]->getDiffuse());
             this->setUniform((baseName + ".specular").c_str(), lights[i]->getSpecular());
             this->setUniform((baseName + ".constant").c_str(), lights[i]->getConstant());
             this->setUniform((baseName + ".linear").c_str(), lights[i]->getLinear());
             this->setUniform((baseName + ".quadratic").c_str(), lights[i]->getQuadratic());
+            this->setUniform((baseName + ".cutOff").c_str(), lights[i]->getCutOff());
+            this->setUniform((baseName + ".outerCutOff").c_str(), lights[i]->getOuterCutOff());
         }
     }
 }

@@ -24,6 +24,8 @@ Application::Application(int width, int height, const char* title) {
 
     glfwSetKeyCallback(m_Window, Application::keyCallback);
     glfwSetCursorPosCallback(m_Window, Application::mouseCallback);
+
+    glfwSetFramebufferSizeCallback(m_Window, Application::framebufferSizeCallback);
    
 }
 
@@ -66,6 +68,15 @@ void Application::mouseCallback(GLFWwindow* window, double xpos, double ypos) {
     if (controller) {
         controller->mouseCallback(xpos, ypos);
     }
+}
+
+void Application::framebufferSizeCallback(GLFWwindow* window, int width, int height) {
+    auto* controller = static_cast<ApplicationController*>(glfwGetWindowUserPointer(window));
+    if (controller) {
+        controller->onWindowResize(width, height);
+    }
+
+    glViewport(0, 0, width, height);
 }
 
 

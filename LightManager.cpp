@@ -21,3 +21,22 @@ void LightManager::clear() {
 const std::vector<std::unique_ptr<Light>>& LightManager::getLights() const {
     return m_lights;
 }
+
+/*std::unique_ptr<Light> LightManager::extractLight(Light* lightPtr) {
+    auto it = std::find_if(m_lights.begin(), m_lights.end(),
+        [&](const std::unique_ptr<Light>& p) {
+            return p.get() == lightPtr;
+        }
+    );
+
+    if (it != m_lights.end()) {
+
+        std::unique_ptr<Light> extractedPtr = std::move(*it);
+
+        m_lights.erase(it);
+
+        return extractedPtr;
+    }
+
+    return nullptr;
+}*/

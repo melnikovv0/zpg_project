@@ -24,7 +24,9 @@ void DrawableObject::draw() const {
     for (const auto& pair : m_uniformsVec3) {
         program->setUniform(pair.first.c_str(), pair.second);
     }
-    model->draw();
+    model->draw(); 
+
+    glUseProgram(0);
 }
 
 ShaderProgram* DrawableObject::getShaderProgram() const

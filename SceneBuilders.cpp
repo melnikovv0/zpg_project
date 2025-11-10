@@ -11,6 +11,7 @@
 #include <random>
 #include "Translation.h"
 #include "Scale.h"
+#include "Light.h"
 #include <GLFW/glfw3.h>
 void SceneBuilders::buildScene1(Scene& scene, ModelManager& models, ShaderManager& shaders, Camera& camera, LightManager& lightManager) {
     Model* triangleModel = models.getModel("triangle");
@@ -41,7 +42,7 @@ void SceneBuilders::buildScene2(Scene& scene, ModelManager& models, ShaderManage
     lightManager.addLight(std::make_unique<Light>(
         glm::vec3(0.0f,0.0f, 0.0f),       
         glm::vec3(0.1f),                 
-        glm::vec3(0.8f),                   
+        glm::vec3(1.0f),                   
         glm::vec3(1.0f)                    
     ));
 
@@ -92,32 +93,69 @@ void SceneBuilders::buildScene2(Scene& scene, ModelManager& models, ShaderManage
     
 }
 
-void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManager& shaders, Camera& camera, LightManager& lightManager) {
 
+void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManager& shaders, Camera& camera, LightManager& lightManager) {
+    lightManager.addLight(std::make_unique<Light>(
+        // Directional
+        glm::vec3(-0.2f, -1.0f, -0.3f), // směr
+        glm::vec3(0.1f, 0.1f, 0.1f), // velmi slabý ambient
+        glm::vec3(0.05f, 0.05f, 0.1f),  // slabý difuzní svit
+        glm::vec3(0.0f, 0.0f, 0.0f),    // žádný specular
+        true
+    ));
+
+    Model* formula1Model = models.getModel("formula1");
     Model* treeModel = models.getModel("tree");
     Model* bushModel = models.getModel("bush");
     Model* planeModel = models.getModel("plain");
+    Model* sphereModel = models.getModel("sphere");
+
     ShaderProgram* multiLightShader = shaders.getShader("phong_multi");
+    ShaderProgram* emissiveShader = shaders.getShader("constant");
 
-    
-    auto light1 = lightManager.addLight(std::make_unique<Light>(
-        glm::vec3(0, 1, 0),         
-        glm::vec3(0.05f),           
-        glm::vec3(1.0f, 0.0f, 0.0f),
-        glm::vec3(1.0f)             
-    ));
-    auto light2 = lightManager.addLight(std::make_unique<Light>(
-        glm::vec3(2, 1, 0),
-        glm::vec3(0.10f),
-        glm::vec3(0.0f, 1.0f, 0.0f),
-        glm::vec3(1.0f)
-    ));
+    const int fireflyCount = 5;
+    glm::vec3 fireflyColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
+    std::vector<Light*> fireflyLights;
+    std::vector<std::shared_ptr<Translation>> fireflyTransforms;
+
+    for (int i = 0; i < fireflyCount; ++i) {
+        auto* light = lightManager.addLight(std::make_unique<Light>(
+            glm::vec3(0, 1, 0),
+            glm::vec3(0.01f),         // Ambient
+            fireflyColor,             // Diffuse 
+            glm::vec3(0.5f)           // Specular
+        ));
+        light->setAttenuation(1.0f, 0.7f, 1.8f);
+        fireflyLights.push_back(light);
+
+        auto& fireflyVisual = scene.add(sphereModel, emissiveShader);
+        fireflyVisual.addUniform("objectColor", fireflyColor);
+
+        auto transform = std::make_shared<CompositeTransform>();
+        auto translation = std::make_shared<Translation>(glm::vec3(0, 1, 0));
+        transform->add(std::make_shared<Scale>(glm::vec3(0.08f)));
+        transform->add(translation);
+        fireflyVisual.setTransform(transform);
+        fireflyTransforms.push_back(translation);
+    }
+
+    // Observer
     camera.addObserver(multiLightShader);
     lightManager.addObserver(multiLightShader);
+    camera.addObserver(emissiveShader);
 
     multiLightShader->update(&camera);
     multiLightShader->update(&lightManager);
+    emissiveShader->update(&camera);
+
+    auto& formula1Obj = scene.add(formula1Model, multiLightShader);
+    formula1Obj.addUniform("objectColor", glm::vec3(1.0f, 0.5f, 0.2f));
+
+    auto f1Transform = std::make_shared<CompositeTransform>();
+    f1Transform->add(std::make_shared<Scale>(glm::vec3(0.05f)));
+    f1Transform->add(std::make_shared<Translation>(glm::vec3(0.0f, 0.0f, 0.0f)));
+    formula1Obj.setTransform(f1Transform);
 
     auto& planeObj = scene.add(planeModel, multiLightShader);
     planeObj.setModelMatrix(glm::scale(glm::mat4(1.0f), glm::vec3(20.0f)));
@@ -131,7 +169,6 @@ void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManage
 
     for (int i = 0; i < 50; ++i) {
         auto& treeObj = scene.add(treeModel, multiLightShader);
-
         treeObj.addUniform("objectColor", glm::vec3(0.4f, 0.2f, 0.0f));
 
         float x = static_cast<float>(posDist(gen));
@@ -148,7 +185,6 @@ void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManage
 
     for (int i = 0; i < 50; ++i) {
         auto& bushObj = scene.add(bushModel, multiLightShader);
-
         bushObj.addUniform("objectColor", glm::vec3(0.1f, 0.6f, 0.1f));
 
         float x = static_cast<float>(posDist(gen));
@@ -163,9 +199,37 @@ void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManage
         bushObj.setTransform(chain);
     }
 
-    scene.setUpdateCallback([light1,light2](float dt) {
-        light1->setPosition({ sin(glfwGetTime() * 0.5f) * 5.0f, 1.0f, cos(glfwGetTime() * 0.5f) * 5.0f });
-        light2->setPosition({ sin(glfwGetTime() * 0.8f) * 3.0f, 1.0f, cos(glfwGetTime() * 0.3f) * 3.0f });
+    scene.setUpdateCallback([fireflyLights, fireflyTransforms](float dt) {
+        for (size_t i = 0; i < fireflyLights.size(); ++i) {
+            float time = glfwGetTime();
+            float radius = 5.0f + i * 1.5f;
+            float speedX = 0.2f + (i % 3) * 0.2f;
+            float speedZ = 0.2f + ((i + 1) % 3) * 0.3f;
+
+            float offsetX;
+            if (i % 2 == 0) {
+                offsetX = -3.0f * i;
+            }
+            else {
+                offsetX = 3.0f * i;
+            }
+
+            float offsetZ;
+            if (i % 3 == 0) {
+                offsetZ = 2.0f * i;
+            }
+            else {
+                offsetZ = -2.0f * i;
+            }
+
+            glm::vec3 newPos = {
+                offsetX + sin(time * speedX) * radius,
+                1.5f + cos(time * (speedX + speedZ)) * 0.4f,
+                offsetZ + cos(time * speedZ) * radius
+            };
+
+            fireflyLights[i]->setPosition(newPos);
+            fireflyTransforms[i]->setPosition(newPos);
+        }
         });
 }
-

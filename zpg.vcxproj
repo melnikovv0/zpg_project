@@ -154,6 +154,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Translation.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +180,7 @@
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="sphere.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Transformation.h" />
     <ClInclude Include="Translation.h" />
     <ClInclude Include="tree.h" />

@@ -25,7 +25,7 @@ void main()
         
         vec3 norm = normalize(Normal);
         vec3 lightDir = normalize(lights[0].position - FragPos);
-        float diff = max(dot(norm, lightDir), 0.0);
+        float diff = max(dot(norm, lightDir), 0.0); //  (coefficient)
         vec3 diffuse = lights[0].diffuse * diff;
         
         result = (ambient + diffuse);
