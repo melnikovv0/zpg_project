@@ -155,6 +155,7 @@
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Translation.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +182,7 @@
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Transformation.h" />
     <ClInclude Include="Translation.h" />
     <ClInclude Include="tree.h" />
@@ -192,6 +194,7 @@
     <None Include="fragment_shader_lambert.glsl" />
     <None Include="fragment_shader_normal_visualizer.glsl" />
     <None Include="fragment_shader_phong_multi.glsl" />
+    <None Include="fragment_shader_phong_textured.glsl" />
     <None Include="vertex_shader_normal_transform.glsl" />
     <None Include="fragment_shader_phong.glsl" />
     <None Include="vertex_shader_lighting_transform.glsl" />

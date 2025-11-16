@@ -13,6 +13,7 @@
 #include "Scale.h"
 #include "Light.h"
 #include <GLFW/glfw3.h>
+#include "ApplicationController.h"
 void SceneBuilders::buildScene1(Scene& scene, ModelManager& models, ShaderManager& shaders, Camera& camera, LightManager& lightManager) {
     Model* triangleModel = models.getModel("triangle");
     ShaderProgram* greenShader = shaders.getShader("green");
@@ -94,7 +95,9 @@ void SceneBuilders::buildScene2(Scene& scene, ModelManager& models, ShaderManage
 }
 
 
-void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManager& shaders, Camera& camera, LightManager& lightManager) {
+
+
+void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManager& shaders, TextureManager& textures, Camera& camera, LightManager& lightManager) {
     lightManager.addLight(std::make_unique<Light>(
         // Directional
         glm::vec3(-0.2f, -1.0f, -0.3f), // směr
@@ -109,9 +112,22 @@ void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManage
     Model* bushModel = models.getModel("bush");
     Model* planeModel = models.getModel("plain");
     Model* sphereModel = models.getModel("sphere");
+    Model* shrekModel = models.getModel("shrek");
+    Model* fionaModel = models.getModel("fiona");
+    Model* toiledModel = models.getModel("toiled");
+
+
+
+
+    Texture* grassTexture = textures.getTexture("grass_tex");
+    Texture* shrekTexture = textures.getTexture("shrek_tex");
+    Texture* fionaTexture = textures.getTexture("fiona_tex");
+    Texture* toiledTexture = textures.getTexture("toiled_tex");
 
     ShaderProgram* multiLightShader = shaders.getShader("phong_multi");
     ShaderProgram* emissiveShader = shaders.getShader("constant");
+
+    ShaderProgram* texturedShader = shaders.getShader("phong_textured");
 
     const int fireflyCount = 5;
     glm::vec3 fireflyColor = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -144,22 +160,56 @@ void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManage
     camera.addObserver(multiLightShader);
     lightManager.addObserver(multiLightShader);
     camera.addObserver(emissiveShader);
+    camera.addObserver(texturedShader);     // <-- ДОБАВЬ ЭТО
+    lightManager.addObserver(texturedShader);
 
     multiLightShader->update(&camera);
     multiLightShader->update(&lightManager);
     emissiveShader->update(&camera);
+    texturedShader->update(&camera);     // <-- И ЭТО
+    texturedShader->update(&lightManager);
 
+
+
+    auto& shrekObj = scene.add(shrekModel, texturedShader);
+    shrekObj.setTexture(shrekTexture);
+    auto shrekTransform = std::make_shared<CompositeTransform>();
+    shrekTransform->add(std::make_shared<Scale>(glm::vec3(0.5f)));
+    shrekTransform->add(std::make_shared<Translation>(glm::vec3(2.0f, 0.0f, -2.0f)));
+    shrekObj.setTransform(shrekTransform);
+
+
+    auto& fionaObj = scene.add(fionaModel, texturedShader);
+    fionaObj.setTexture(fionaTexture);
+    auto fionaTransform = std::make_shared<CompositeTransform>();
+    fionaTransform->add(std::make_shared<Scale>(glm::vec3(0.5f)));
+    fionaTransform->add(std::make_shared<Translation>(glm::vec3(4.0f, 0.0f, -2.0f)));
+    fionaObj.setTransform(fionaTransform);
+
+
+    auto& toiledObj = scene.add(toiledModel, texturedShader);
+    toiledObj.setTexture(toiledTexture);
+    auto toiledTransform = std::make_shared<CompositeTransform>();
+    toiledTransform->add(std::make_shared<Scale>(glm::vec3(0.5f))); 
+    toiledTransform->add(std::make_shared<Translation>(glm::vec3(3.0f, 0.0f, -2.0f))); 
+    toiledObj.setTransform(toiledTransform);
+
+  
     auto& formula1Obj = scene.add(formula1Model, multiLightShader);
     formula1Obj.addUniform("objectColor", glm::vec3(1.0f, 0.5f, 0.2f));
-
     auto f1Transform = std::make_shared<CompositeTransform>();
     f1Transform->add(std::make_shared<Scale>(glm::vec3(0.05f)));
-    f1Transform->add(std::make_shared<Translation>(glm::vec3(0.0f, 0.0f, 0.0f)));
+    f1Transform->add(std::make_shared<Translation>(glm::vec3(0.0f, 0.0f, 200.0f)));
+    //f1Transform->add(std::make_shared<Translation>(glm::vec3(0.0f, 0.0f, 0.0f)));
     formula1Obj.setTransform(f1Transform);
 
-    auto& planeObj = scene.add(planeModel, multiLightShader);
+
+    auto& planeObj = scene.add(planeModel, texturedShader); // <-- ИСПОЛЬЗУЕМ ТЕКСТУРНЫЙ ШЕЙДЕР
     planeObj.setModelMatrix(glm::scale(glm::mat4(1.0f), glm::vec3(20.0f)));
-    planeObj.addUniform("objectColor", glm::vec3(0.0f, 0.8f, 0.0f));
+    planeObj.setTexture(grassTexture); // <-- ПРИМЕНЯЕМ ТЕКСТУРУ
+
+
+
 
     std::random_device rd;
     std::mt19937 gen(rd());

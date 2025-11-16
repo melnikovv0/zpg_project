@@ -75,6 +75,9 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -155,6 +158,9 @@
     <ClInclude Include="Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment_shader_blinn.glsl" />
@@ -167,5 +173,6 @@
     <None Include="vertex_shader_lighting_transform.glsl" />
     <None Include="vertex_shader_simple_transform.glsl" />
     <None Include="fragment_shader_phong_multi.glsl" />
+    <None Include="fragment_shader_phong_textured.glsl" />
   </ItemGroup>
 </Project>

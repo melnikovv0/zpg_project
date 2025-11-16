@@ -7,6 +7,7 @@
 #include "ShaderManager.h"  
 #include "Camera.h"
 #include "LightManager.h"
+#include "TextureManager.h"
 
 class Model;
 class ShaderProgram;
@@ -40,6 +41,7 @@ private:
 
     ModelManager  m_ModelManager;
     ShaderManager m_ShaderManager;
+    TextureManager m_TextureManager;
     std::unique_ptr<Camera> m_Camera;
     LightManager m_lightManager;
 

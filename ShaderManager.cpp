@@ -14,6 +14,8 @@ void ShaderManager::loadShaders() {
 
     m_Shaders["phong_multi"] = std::make_unique<ShaderProgram>(vs_lighting_path, shader_path + "fragment_shader_phong_multi.glsl");
 
+    m_Shaders["phong_textured"] = std::make_unique<ShaderProgram>(vs_lighting_path, shader_path + "fragment_shader_phong_textured.glsl" );
+
     m_Shaders["normal_color"] = std::make_unique<ShaderProgram>(shader_path + "vertex_shader_normal_transform.glsl", shader_path + "fragment_shader_normal_visualizer.glsl");
 
 

@@ -12,6 +12,8 @@ ApplicationController::~ApplicationController() {}
 void ApplicationController::init() {
     m_ModelManager.loadModels();
     m_ShaderManager.loadShaders();
+    m_TextureManager.loadTextures();
+
     m_Camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
 
     switchScene(1);
@@ -124,7 +126,7 @@ void ApplicationController::switchScene(int sceneNumber) {
         SceneBuilders::buildScene2(scenes[2], m_ModelManager, m_ShaderManager, *m_Camera, m_lightManager);
     }
     else if (sceneNumber == 3) { 
-        SceneBuilders::buildScene3(scenes[3], m_ModelManager, m_ShaderManager, *m_Camera, m_lightManager);
+        SceneBuilders::buildScene3(scenes[3], m_ModelManager, m_ShaderManager, m_TextureManager, *m_Camera, m_lightManager);
 
         auto flashlight = std::make_unique<Light>(
             m_Camera->Position,

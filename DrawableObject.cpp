@@ -14,10 +14,16 @@ void DrawableObject::update(float dt) {
 void DrawableObject::draw() const {
     if (!program || !model) return;
 
+    program->use();
+
+    if (m_texture) {
+        m_texture->bind(0); 
+        program->setUniform("textureUnit", 0); 
+    }
+
     glm::mat4 M = baseMatrix;
     if (transform) M = M * transform->matrix();
 
-    program->use();
 
     program->setUniform("modelMatrix", M);
 

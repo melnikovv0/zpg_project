@@ -36,9 +36,13 @@ void ModelManager::loadModels() {
     const float* plain_begin = plain;
     const float* plain_end = plain_begin + sizeof(plain) / sizeof(float);
     std::vector<float> plainVertices(plain_begin, plain_end);
-    m_Models["plain"] = std::make_unique<Model>(plainVertices, 6);
+    m_Models["plain"] = std::make_unique<Model>(plainVertices, 8);
 
     loadModelFromObj("assets/formula1.obj", "formula1");
+    loadModelFromObj("assets/shrek.obj", "shrek");
+    loadModelFromObj("assets/fiona.obj", "fiona");
+    loadModelFromObj("assets/toiled.obj", "toiled");
+
 }
 
 Model* ModelManager::getModel(const std::string& name) {
