@@ -10,6 +10,9 @@ void TextureManager::loadTextures() {
         m_Textures["shrek_tex"] = std::make_unique<Texture>("assets/shrek.png");
         m_Textures["fiona_tex"] = std::make_unique<Texture>("assets/fiona.png");
         m_Textures["toiled_tex"] = std::make_unique<Texture>("assets/toiled.jpg");
+        m_Textures["sun_tex"] = std::make_unique<Texture>("assets/sun.jpg");
+        m_Textures["earth_tex"] = std::make_unique<Texture>("assets/earth.jpg");
+        m_Textures["moon_tex"] = std::make_unique<Texture>("assets/moon.jpg");
 
     }
     catch (const std::runtime_error& e) {

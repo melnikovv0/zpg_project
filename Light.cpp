@@ -51,7 +51,7 @@ void Light::setManager(LightManager* manager) {
 }
 
 void Light::setAttenuation(float constant, float linear, float quadratic) { 
-    m_constant = constant; // jestli 0 nekonečně jasné.
-    m_linear = linear; // Způsobuje, že světlo rovnoměrně slábne s vzdáleností.
-    m_quadratic = quadratic; // Způsobuje, že světlo slábne velmi rychle
+    m_constant = constant; 
+    m_linear = linear; 
+    m_quadratic = quadratic;
 }

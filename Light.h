@@ -59,6 +59,6 @@ private:
     float m_quadratic = 0.032f;
 
     // Spotlight
-    float m_cutOff; //  Jedná se o vnitřní kužel  osvětleno plnou jasností 100 %
-    float m_outerCutOff;// Jedná se o vnější kužel. Vše, co se nachází mimo tento úhel, je zcela ve tmě 0 % jasu
+    float m_cutOff; 
+    float m_outerCutOff;
 };

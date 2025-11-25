@@ -14,6 +14,10 @@
 #include "Light.h"
 #include <GLFW/glfw3.h>
 #include "ApplicationController.h"
+#include "MatrixTransform.h"
+#include "DynamicRotation.h"
+
+
 void SceneBuilders::buildScene1(Scene& scene, ModelManager& models, ShaderManager& shaders, Camera& camera, LightManager& lightManager) {
     Model* triangleModel = models.getModel("triangle");
     ShaderProgram* greenShader = shaders.getShader("green");
@@ -100,10 +104,10 @@ void SceneBuilders::buildScene2(Scene& scene, ModelManager& models, ShaderManage
 void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManager& shaders, TextureManager& textures, Camera& camera, LightManager& lightManager) {
     lightManager.addLight(std::make_unique<Light>(
         // Directional
-        glm::vec3(-0.2f, -1.0f, -0.3f), // směr
-        glm::vec3(0.1f, 0.1f, 0.1f), // velmi slabý ambient
-        glm::vec3(0.05f, 0.05f, 0.1f),  // slabý difuzní svit
-        glm::vec3(0.0f, 0.0f, 0.0f),    // žádný specular
+        glm::vec3(-0.2f, -1.0f, -0.3f), 
+        glm::vec3(0.1f, 0.1f, 0.1f), 
+        glm::vec3(0.05f, 0.05f, 0.1f),  
+        glm::vec3(0.0f, 0.0f, 0.0f),  
         true
     ));
 
@@ -160,13 +164,13 @@ void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManage
     camera.addObserver(multiLightShader);
     lightManager.addObserver(multiLightShader);
     camera.addObserver(emissiveShader);
-    camera.addObserver(texturedShader);     // <-- ДОБАВЬ ЭТО
+    camera.addObserver(texturedShader);    
     lightManager.addObserver(texturedShader);
 
     multiLightShader->update(&camera);
     multiLightShader->update(&lightManager);
     emissiveShader->update(&camera);
-    texturedShader->update(&camera);     // <-- И ЭТО
+    texturedShader->update(&camera);    
     texturedShader->update(&lightManager);
 
 
@@ -190,6 +194,13 @@ void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManage
     auto& toiledObj = scene.add(toiledModel, texturedShader);
     toiledObj.setTexture(toiledTexture);
     auto toiledTransform = std::make_shared<CompositeTransform>();
+
+   // glm::mat4 customMatrix = glm::mat4(1.0f);
+
+   // customMatrix[3][3] = 10.0f;
+
+    //toiledTransform->add(std::make_shared<MatrixTransform>(customMatrix));
+
     toiledTransform->add(std::make_shared<Scale>(glm::vec3(0.5f))); 
     toiledTransform->add(std::make_shared<Translation>(glm::vec3(3.0f, 0.0f, -2.0f))); 
     toiledObj.setTransform(toiledTransform);
@@ -198,15 +209,23 @@ void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManage
     auto& formula1Obj = scene.add(formula1Model, multiLightShader);
     formula1Obj.addUniform("objectColor", glm::vec3(1.0f, 0.5f, 0.2f));
     auto f1Transform = std::make_shared<CompositeTransform>();
+
+    //glm::mat4 customMatrix = glm::mat4(1.0f);
+
+    //customMatrix[3][3] = 20.0f;
+
+    //f1Transform->add(std::make_shared<MatrixTransform>(customMatrix));
+
     f1Transform->add(std::make_shared<Scale>(glm::vec3(0.05f)));
-    f1Transform->add(std::make_shared<Translation>(glm::vec3(0.0f, 0.0f, 200.0f)));
-    //f1Transform->add(std::make_shared<Translation>(glm::vec3(0.0f, 0.0f, 0.0f)));
+    f1Transform->add(std::make_shared<Translation>(glm::vec3(0.0f, 0.0f, 0.0f)));
+
+
     formula1Obj.setTransform(f1Transform);
 
 
-    auto& planeObj = scene.add(planeModel, texturedShader); // <-- ИСПОЛЬЗУЕМ ТЕКСТУРНЫЙ ШЕЙДЕР
+    auto& planeObj = scene.add(planeModel, texturedShader); 
     planeObj.setModelMatrix(glm::scale(glm::mat4(1.0f), glm::vec3(20.0f)));
-    planeObj.setTexture(grassTexture); // <-- ПРИМЕНЯЕМ ТЕКСТУРУ
+    planeObj.setTexture(grassTexture); 
 
 
 
@@ -281,5 +300,92 @@ void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManage
             fireflyLights[i]->setPosition(newPos);
             fireflyTransforms[i]->setPosition(newPos);
         }
+        });
+}
+
+void SceneBuilders::buildScene4(Scene& scene, ModelManager& models, ShaderManager& shaders, TextureManager& textures, Camera& camera, LightManager& lightManager) {
+
+    auto sunLight = std::make_unique<Light>(
+        glm::vec3(0.0f, 0.0f, 0.0f), // Pozice 
+        glm::vec3(0.2f),             // Ambient
+        glm::vec3(1.5f, 1.5f, 1.3f), // Diffuse
+        glm::vec3(0.0f)              // Specular
+    );
+
+    sunLight->setAttenuation(1.0f, 0.0f, 0.02f);
+    lightManager.addLight(std::move(sunLight));
+
+    Model* ballModel = models.getModel("ball");
+    Texture* sunTex = textures.getTexture("sun_tex");
+    Texture* earthTex = textures.getTexture("earth_tex");
+    Texture* moonTex = textures.getTexture("moon_tex");
+
+    ShaderProgram* texturedShader = shaders.getShader("phong_textured");
+    camera.addObserver(texturedShader);
+    lightManager.addObserver(texturedShader);
+    texturedShader->update(&camera);
+    texturedShader->update(&lightManager);
+
+    // sun
+    auto& sunObj = scene.add(ballModel, texturedShader);
+    sunObj.setTexture(sunTex);
+
+    auto sunTransform = std::make_shared<CompositeTransform>();
+    sunTransform->add(std::make_shared<Scale>(glm::vec3(0.02f)));
+
+    auto sunSpin = std::make_shared<Rotation>(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    sunTransform->add(sunSpin);
+
+    sunObj.setTransform(sunTransform);
+
+
+    // earth
+    auto& earthObj = scene.add(ballModel, texturedShader);
+    earthObj.setTexture(earthTex);
+
+    auto earthTransform = std::make_shared<CompositeTransform>();
+
+    earthTransform->add(std::make_shared<Scale>(glm::vec3(0.008f)));
+
+    auto earthSpin = std::make_shared<Rotation>(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    earthTransform->add(earthSpin);
+
+    auto earthTranslation = std::make_shared<Translation>(glm::vec3(8.0f, 0.0f, 0.0f));
+    earthTransform->add(earthTranslation);
+
+    auto earthOrbit = std::make_shared<Rotation>(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    earthTransform->add(earthOrbit);
+
+    earthObj.setTransform(earthTransform);
+
+
+    // moon
+    auto& moonObj = scene.add(ballModel, texturedShader);
+    moonObj.setTexture(moonTex);
+
+    auto moonTransform = std::make_shared<CompositeTransform>();
+
+    moonTransform->add(std::make_shared<Scale>(glm::vec3(0.003f)));
+
+    moonTransform->add(std::make_shared<Translation>(glm::vec3(2.0f, 0.0f, 0.0f)));
+
+    auto moonOrbit = std::make_shared<Rotation>(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    moonTransform->add(moonOrbit);
+
+    moonTransform->add(std::make_shared<Translation>(glm::vec3(8.0f, 0.0f, 0.0f)));
+
+    moonTransform->add(earthOrbit);
+
+    moonObj.setTransform(moonTransform);
+
+    scene.setUpdateCallback([sunSpin,earthSpin, earthOrbit, moonOrbit](float dt) {
+
+        sunSpin->setAngle(sunSpin->getAngle() + 0.8f * dt);
+
+        earthSpin->setAngle(earthSpin->getAngle() + 2.5f * dt);
+
+        earthOrbit->setAngle(earthOrbit->getAngle() + 0.75f * dt);
+
+        moonOrbit->setAngle(moonOrbit->getAngle() + 3.25f * dt);
         });
 }

@@ -68,6 +68,7 @@ void ApplicationController::keyCallback(int key, int scancode, int action, int m
         if (key == GLFW_KEY_1) switchScene(1);
         else if (key == GLFW_KEY_2) switchScene(2);
         else if (key == GLFW_KEY_3) switchScene(3);
+        else if (key == GLFW_KEY_4) switchScene(4);
 
         if (key == GLFW_KEY_ESCAPE)
             glfwSetWindowShouldClose(window, true);
@@ -139,6 +140,9 @@ void ApplicationController::switchScene(int sceneNumber) {
         );
         m_flashlight = m_lightManager.addLight(std::move(flashlight));
         m_flashlightOn = true;
+    }
+    else if (sceneNumber == 4) {
+        SceneBuilders::buildScene4(scenes[4], m_ModelManager, m_ShaderManager, m_TextureManager, *m_Camera, m_lightManager);
     }
     activeScene = &scenes[sceneNumber];
     std::cout << "Switched to Scene " << sceneNumber << std::endl;

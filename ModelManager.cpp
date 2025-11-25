@@ -42,6 +42,8 @@ void ModelManager::loadModels() {
     loadModelFromObj("assets/shrek.obj", "shrek");
     loadModelFromObj("assets/fiona.obj", "fiona");
     loadModelFromObj("assets/toiled.obj", "toiled");
+    loadModelFromObj("assets/ball.obj", "ball");
+
 
 }
 
