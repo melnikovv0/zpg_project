@@ -22,6 +22,8 @@ void ShaderManager::loadShaders() {
 
     m_Shaders["green"] = std::make_unique<ShaderProgram>(shader_path + "vertex_shader_simple_transform.glsl", shader_path + "fragment_shader_green.glsl");
 
+    m_Shaders["skybox"] = std::make_unique<ShaderProgram>(shader_path + "vertex_shader_skybox.glsl", shader_path + "fragment_shader_skybox.glsl");
+
     
 
 }

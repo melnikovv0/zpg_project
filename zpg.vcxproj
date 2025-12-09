@@ -156,6 +156,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Translation.cpp" />
@@ -184,6 +185,8 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="Skybox.h" />
+    <ClInclude Include="skycube.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
@@ -199,10 +202,12 @@
     <None Include="fragment_shader_normal_visualizer.glsl" />
     <None Include="fragment_shader_phong_multi.glsl" />
     <None Include="fragment_shader_phong_textured.glsl" />
+    <None Include="fragment_shader_skybox.glsl" />
     <None Include="vertex_shader_normal_transform.glsl" />
     <None Include="fragment_shader_phong.glsl" />
     <None Include="vertex_shader_lighting_transform.glsl" />
     <None Include="vertex_shader_simple_transform.glsl" />
+    <None Include="vertex_shader_skybox.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

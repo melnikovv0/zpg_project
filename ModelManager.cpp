@@ -7,6 +7,7 @@
 #include "sphere.h"
 #include "bushes.h" 
 #include "plain.h"
+#include "skycube.h"
 
 #include <vector>
 #include <iostream>
@@ -38,11 +39,18 @@ void ModelManager::loadModels() {
     std::vector<float> plainVertices(plain_begin, plain_end);
     m_Models["plain"] = std::make_unique<Model>(plainVertices, 8);
 
+    const float* sky_begin = skycube;
+    const float* sky_end = sky_begin + sizeof(skycube) / sizeof(float);
+    std::vector<float> skyVertices(sky_begin, sky_end);
+    m_Models["skybox"] = std::make_unique<Model>(skyVertices, 3);
+
     loadModelFromObj("assets/formula1.obj", "formula1");
     loadModelFromObj("assets/shrek.obj", "shrek");
     loadModelFromObj("assets/fiona.obj", "fiona");
     loadModelFromObj("assets/toiled.obj", "toiled");
     loadModelFromObj("assets/ball.obj", "ball");
+    loadModelFromObj("assets/mel0104.obj", "mel0104");
+
 
 
 }

@@ -60,6 +60,7 @@ void ApplicationController::render() {
         }
 
         activeScene->render();
+        activeScene->drawSkybox(m_Camera->getViewMatrix(), projectionMatrix);
     }
 }
 
@@ -124,7 +125,7 @@ void ApplicationController::switchScene(int sceneNumber) {
         SceneBuilders::buildScene1(scenes[1], m_ModelManager, m_ShaderManager, *m_Camera, m_lightManager);
     }
     else if (sceneNumber == 2) {
-        SceneBuilders::buildScene2(scenes[2], m_ModelManager, m_ShaderManager, *m_Camera, m_lightManager);
+        SceneBuilders::buildScene2(scenes[2], m_ModelManager, m_ShaderManager, m_TextureManager, *m_Camera, m_lightManager);
     }
     else if (sceneNumber == 3) { 
         SceneBuilders::buildScene3(scenes[3], m_ModelManager, m_ShaderManager, m_TextureManager, *m_Camera, m_lightManager);

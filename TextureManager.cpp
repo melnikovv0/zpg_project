@@ -1,6 +1,8 @@
 #include "TextureManager.h"
 #include <stdexcept>
 #include <iostream>
+#include <vector>
+#include "stb_image.h"
 
 void TextureManager::loadTextures() {
 
@@ -13,6 +15,13 @@ void TextureManager::loadTextures() {
         m_Textures["sun_tex"] = std::make_unique<Texture>("assets/sun.jpg");
         m_Textures["earth_tex"] = std::make_unique<Texture>("assets/earth.jpg");
         m_Textures["moon_tex"] = std::make_unique<Texture>("assets/moon.jpg");
+
+        std::vector<std::string> faces = {
+            "assets/posx.jpg", "assets/negx.jpg",
+            "assets/posy.jpg", "assets/negy.jpg",
+            "assets/posz.jpg", "assets/negz.jpg"
+        };
+        m_Textures["skybox"] = std::make_unique<Texture>(faces);
 
     }
     catch (const std::runtime_error& e) {
@@ -27,3 +36,4 @@ Texture* TextureManager::getTexture(const std::string& name) {
     }
     return nullptr;
 }
+

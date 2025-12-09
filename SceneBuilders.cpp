@@ -16,6 +16,7 @@
 #include "ApplicationController.h"
 #include "MatrixTransform.h"
 #include "DynamicRotation.h"
+#include "Skybox.h"
 
 
 void SceneBuilders::buildScene1(Scene& scene, ModelManager& models, ShaderManager& shaders, Camera& camera, LightManager& lightManager) {
@@ -36,8 +37,10 @@ void SceneBuilders::buildScene1(Scene& scene, ModelManager& models, ShaderManage
 
 }
 
-void SceneBuilders::buildScene2(Scene& scene, ModelManager& models, ShaderManager& shaders, Camera& camera, LightManager& lightManager) {
+void SceneBuilders::buildScene2(Scene& scene, ModelManager& models, ShaderManager& shaders, TextureManager& textures, Camera& camera, LightManager& lightManager)
+{
     Model* sphereModel = models.getModel("sphere");
+
     ShaderProgram* constantShader = shaders.getShader("constant");
     ShaderProgram* lambertShader = shaders.getShader("lambert");
     ShaderProgram* phongShader = shaders.getShader("phong");
@@ -45,13 +48,13 @@ void SceneBuilders::buildScene2(Scene& scene, ModelManager& models, ShaderManage
 
 
     lightManager.addLight(std::make_unique<Light>(
-        glm::vec3(0.0f,0.0f, 0.0f),       
-        glm::vec3(0.1f),                 
-        glm::vec3(1.0f),                   
-        glm::vec3(1.0f)                    
+        glm::vec3(0.0f, 0.0f, 0.0f),
+        glm::vec3(0.1f),
+        glm::vec3(1.0f),
+        glm::vec3(1.0f)
     ));
 
- 
+
     camera.addObserver(constantShader);
     lightManager.addObserver(constantShader);
 
@@ -64,9 +67,10 @@ void SceneBuilders::buildScene2(Scene& scene, ModelManager& models, ShaderManage
     camera.addObserver(blinnShader);
     lightManager.addObserver(blinnShader);
 
-    phongShader->update(&camera);        
-    phongShader->update(&lightManager);   
-    blinnShader->update(&camera);         
+
+    phongShader->update(&camera);
+    phongShader->update(&lightManager);
+    blinnShader->update(&camera);
     blinnShader->update(&lightManager);
 
     lambertShader->update(&camera);
@@ -91,14 +95,16 @@ void SceneBuilders::buildScene2(Scene& scene, ModelManager& models, ShaderManage
     sphereUp.setModelMatrix(glm::scale(glm::translate(glm::mat4(1.0f), { 0, 0.7f, 0 }), { 0.4f, 0.4f, 0.4f }));
     sphereUp.addUniform("objectColor", object_color);
 
-    // Constant 
-    auto& sphereDown = scene.add(sphereModel, constantShader);
+
+   // Constant 
+   auto& sphereDown = scene.add(sphereModel, constantShader);
+
+
     sphereDown.setModelMatrix(glm::scale(glm::translate(glm::mat4(1.0f), { 0, -0.7f, 0 }), { 0.4f, 0.4f, 0.4f }));
     sphereDown.addUniform("objectColor", object_color);
-    
+
+
 }
-
-
 
 
 void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManager& shaders, TextureManager& textures, Camera& camera, LightManager& lightManager) {
@@ -111,6 +117,7 @@ void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManage
         true
     ));
 
+
     Model* formula1Model = models.getModel("formula1");
     Model* treeModel = models.getModel("tree");
     Model* bushModel = models.getModel("bush");
@@ -119,7 +126,7 @@ void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManage
     Model* shrekModel = models.getModel("shrek");
     Model* fionaModel = models.getModel("fiona");
     Model* toiledModel = models.getModel("toiled");
-
+    Model* skyboxModel = models.getModel("skybox");
 
 
 
@@ -128,10 +135,17 @@ void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManage
     Texture* fionaTexture = textures.getTexture("fiona_tex");
     Texture* toiledTexture = textures.getTexture("toiled_tex");
 
+    Texture* skyTexture = textures.getTexture("skybox");
+    GLuint cubemapID = skyTexture->getID();
+
+
+
     ShaderProgram* multiLightShader = shaders.getShader("phong_multi");
     ShaderProgram* emissiveShader = shaders.getShader("constant");
 
     ShaderProgram* texturedShader = shaders.getShader("phong_textured");
+
+    ShaderProgram* skyboxShader = shaders.getShader("skybox");
 
     const int fireflyCount = 5;
     glm::vec3 fireflyColor = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -173,7 +187,8 @@ void SceneBuilders::buildScene3(Scene& scene, ModelManager& models, ShaderManage
     texturedShader->update(&camera);    
     texturedShader->update(&lightManager);
 
-
+    auto skybox = std::make_unique<Skybox>(skyboxModel, skyboxShader, cubemapID);
+    scene.setSkybox(std::move(skybox));
 
     auto& shrekObj = scene.add(shrekModel, texturedShader);
     shrekObj.setTexture(shrekTexture);
@@ -307,7 +322,7 @@ void SceneBuilders::buildScene4(Scene& scene, ModelManager& models, ShaderManage
 
     auto sunLight = std::make_unique<Light>(
         glm::vec3(0.0f, 0.0f, 0.0f), // Pozice 
-        glm::vec3(0.2f),             // Ambient
+        glm::vec3(1.2f),             // Ambient
         glm::vec3(1.5f, 1.5f, 1.3f), // Diffuse
         glm::vec3(0.0f)              // Specular
     );
@@ -316,76 +331,90 @@ void SceneBuilders::buildScene4(Scene& scene, ModelManager& models, ShaderManage
     lightManager.addLight(std::move(sunLight));
 
     Model* ballModel = models.getModel("ball");
+    Model* mel0104Model = models.getModel("mel0104");
+
     Texture* sunTex = textures.getTexture("sun_tex");
     Texture* earthTex = textures.getTexture("earth_tex");
     Texture* moonTex = textures.getTexture("moon_tex");
 
     ShaderProgram* texturedShader = shaders.getShader("phong_textured");
+    ShaderProgram* multiLightShader = shaders.getShader("phong_multi");
+
+
     camera.addObserver(texturedShader);
+    camera.addObserver(multiLightShader);
     lightManager.addObserver(texturedShader);
+    lightManager.addObserver(multiLightShader);
+
+
+    multiLightShader->update(&camera);
+    multiLightShader->update(&lightManager);
     texturedShader->update(&camera);
     texturedShader->update(&lightManager);
 
-    // sun
+
+    auto& mel0104Visual = scene.add(mel0104Model, multiLightShader);
+    mel0104Visual.addUniform("objectColor", glm::vec3(0.2f, 0.2f, 0.8f));
+
+    auto mel0104Transform = std::make_shared<CompositeTransform>();
+
+    mel0104Transform->add(std::make_shared<Scale>(glm::vec3(0.5f)));
+
+    mel0104Transform->add(std::make_shared<Translation>(glm::vec3(5.0f, 0.0f, 0.0f)));
+
+    mel0104Transform->add(std::make_shared<DynamicRotation>(0.5f, glm::vec3(0.0f, 1.0f, 0.0f)));
+
+    mel0104Visual.setTransform(mel0104Transform);
+
+
     auto& sunObj = scene.add(ballModel, texturedShader);
     sunObj.setTexture(sunTex);
 
     auto sunTransform = std::make_shared<CompositeTransform>();
     sunTransform->add(std::make_shared<Scale>(glm::vec3(0.02f)));
 
-    auto sunSpin = std::make_shared<Rotation>(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-    sunTransform->add(sunSpin);
+    sunTransform->add(std::make_shared<DynamicRotation>(0.8f, glm::vec3(0.0f, 1.0f, 0.0f)));
 
     sunObj.setTransform(sunTransform);
 
 
-    // earth
     auto& earthObj = scene.add(ballModel, texturedShader);
     earthObj.setTexture(earthTex);
 
     auto earthTransform = std::make_shared<CompositeTransform>();
-
     earthTransform->add(std::make_shared<Scale>(glm::vec3(0.008f)));
-
-    auto earthSpin = std::make_shared<Rotation>(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-    earthTransform->add(earthSpin);
+    earthTransform->add(std::make_shared<DynamicRotation>(2.5f, glm::vec3(0.0f, 1.0f, 0.0f)));
 
     auto earthTranslation = std::make_shared<Translation>(glm::vec3(8.0f, 0.0f, 0.0f));
     earthTransform->add(earthTranslation);
 
-    auto earthOrbit = std::make_shared<Rotation>(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+    auto earthOrbit = std::make_shared<DynamicRotation>(0.75f, glm::vec3(0.0f, 1.0f, 0.0f));
     earthTransform->add(earthOrbit);
 
     earthObj.setTransform(earthTransform);
 
 
-    // moon
     auto& moonObj = scene.add(ballModel, texturedShader);
     moonObj.setTexture(moonTex);
 
     auto moonTransform = std::make_shared<CompositeTransform>();
-
     moonTransform->add(std::make_shared<Scale>(glm::vec3(0.003f)));
 
     moonTransform->add(std::make_shared<Translation>(glm::vec3(2.0f, 0.0f, 0.0f)));
 
-    auto moonOrbit = std::make_shared<Rotation>(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    auto moonOrbit = std::make_shared<DynamicRotation>(5.0f, glm::vec3(0.0f, 1.0f, 0.0f));
     moonTransform->add(moonOrbit);
 
-    moonTransform->add(std::make_shared<Translation>(glm::vec3(8.0f, 0.0f, 0.0f)));
+
+    moonTransform->add(earthTranslation);
 
     moonTransform->add(earthOrbit);
 
     moonObj.setTransform(moonTransform);
 
-    scene.setUpdateCallback([sunSpin,earthSpin, earthOrbit, moonOrbit](float dt) {
 
-        sunSpin->setAngle(sunSpin->getAngle() + 0.8f * dt);
 
-        earthSpin->setAngle(earthSpin->getAngle() + 2.5f * dt);
 
-        earthOrbit->setAngle(earthOrbit->getAngle() + 0.75f * dt);
-
-        moonOrbit->setAngle(moonOrbit->getAngle() + 3.25f * dt);
-        });
 }
+

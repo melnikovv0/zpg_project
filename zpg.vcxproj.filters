@@ -84,6 +84,9 @@
     <ClCompile Include="DynamicRotation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -173,6 +176,12 @@
     <ClInclude Include="DynamicRotation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="skycube.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment_shader_blinn.glsl" />
@@ -186,5 +195,7 @@
     <None Include="vertex_shader_simple_transform.glsl" />
     <None Include="fragment_shader_phong_multi.glsl" />
     <None Include="fragment_shader_phong_textured.glsl" />
+    <None Include="fragment_shader_skybox.glsl" />
+    <None Include="vertex_shader_skybox.glsl" />
   </ItemGroup>
 </Project>

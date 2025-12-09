@@ -12,8 +12,6 @@ public:
  
     Light* addLight(std::unique_ptr<Light> light);
 
-    //std::unique_ptr<Light> extractLight(Light* lightPtr);
-
     void onLightUpdated();
     void clear();
 

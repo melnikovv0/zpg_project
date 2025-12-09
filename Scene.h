@@ -4,6 +4,7 @@
 #include <set>
 #include "DrawableObject.h"
 #include "Light.h" 
+#include "Skybox.h"
 
 class Model;
 class ShaderProgram;
@@ -22,10 +23,17 @@ public:
 
     std::set<ShaderProgram*> getUniqueShaders();
 
+    void setSkybox(std::unique_ptr<Skybox> skybox);
+
+    void drawSkybox(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
+
+
 private:
     std::vector<DrawableObject> objects;
 
     std::vector<std::unique_ptr<Light>> m_lights;
 
     std::function<void(float)> m_UpdateCallback;
+
+    std::unique_ptr<Skybox> m_Skybox;
 };

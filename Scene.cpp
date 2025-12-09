@@ -43,3 +43,13 @@ std::set<ShaderProgram*> Scene::getUniqueShaders() {
     }
     return shaders;
 }
+
+void Scene::setSkybox(std::unique_ptr<Skybox> skybox) {
+    m_Skybox = std::move(skybox);
+}
+
+void Scene::drawSkybox(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) {
+    if (m_Skybox) {
+        m_Skybox->draw(viewMatrix, projectionMatrix);
+    }
+}
