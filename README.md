@@ -37,5 +37,3 @@ A modern 3D graphics application built with **C++** and **OpenGL 3.3**. This pro
 * **W / A / S / D**: Move camera.
 * **Mouse**: Look around (Yaw/Pitch).
 * **Scroll**: Zoom in/out (Field of View).
-
-## 📸 Preview
